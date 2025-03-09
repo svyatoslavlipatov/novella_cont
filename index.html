@@ -540,84 +540,61 @@
     
       // -------- Логика переключения на транзитную сцену -------- 
       document.querySelector('#button-next').addEventListener('click', async function () {
-    console.log('click');
-    const mainScene = document.querySelector('#main-scene');
-    const transitionScene = document.querySelector('#transition-scene');
-    const buttonNext = document.querySelector('#button-next');
-    const buttonBack = document.querySelector('#button-back');
-    const background = document.querySelector('#background');
-    
-    // Аудио элементы
-    const firstMusic = document.querySelector('#transition-first-music');
-    const secondMusic = document.querySelector('#transition-second-music');
+      console.log('click');
+      const mainScene = document.querySelector('#main-scene');
+      const transitionScene = document.querySelector('#transition-scene');
+      const buttonNext = document.querySelector('#button-next');
+      const buttonBack = document.querySelector('#button-back');
+      const background = document.querySelector('#background');
+      
+      // Аудио элементы
+      const firstMusic = document.querySelector('#transition-first-music');
+      const secondMusic = document.querySelector('#transition-second-music');
 
-    mainScene.setAttribute('visible', 'false');
-    transitionScene.setAttribute('visible', 'true');
-    buttonNext.classList.remove('clickable');
-    buttonBack.classList.add('clickable');
-    background.setAttribute('environment', 'preset: forest');
+      mainScene.setAttribute('visible', 'false');
+      transitionScene.setAttribute('visible', 'true');
+      buttonNext.classList.remove('clickable');
+      buttonBack.classList.add('clickable');
+      background.setAttribute('environment', 'preset: forest');
 
-    // Запускаем первую музыку
-    firstMusic.components.sound.playSound();
+      // Запускаем первую музыку
+      firstMusic.components.sound.playSound();
 
-    const messages = [
+      const messages = [
         { id: '#msg-one', delay: 1000 },
         { id: '#msg-two', delay: 1000 },
         { id: '#msg-three', delay: 1000 },
         { id: '#msg-four', delay: 1000 },
         { id: '#msg-five', delay: 1000 },
         { id: '#msg-six', delay: 0 }
-    ];
+      ];
 
-    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-    const animationDuration = 1000;
-    const pauseBeforeFadeIn = 1000;
+      const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+      const animationDuration = 1000;
+      const pauseBeforeFadeIn = 1000;
 
-    // Функция для плавного затухания звука
-    const fadeOutAudio = (audioElement, duration = 1000) => {
+      const animateOpacity = (element, from, to, duration) => {
         return new Promise(resolve => {
-            const audio = audioElement.components.sound;
-            const initialVolume = audio.sound.volume;
-            const steps = 20;
-            const stepDuration = duration / steps;
-            let currentVolume = initialVolume;
-
-            const fadeInterval = setInterval(() => {
-                currentVolume = Math.max(0, currentVolume - (initialVolume / steps));
-                audio.sound.volume = currentVolume;
-
-                if (currentVolume <= 0) {
-                    clearInterval(fadeInterval);
-                    audio.stopSound();
-                    audio.sound.volume = initialVolume; // Восстанавливаем исходную громкость
-                    resolve();
-                }
-            }, stepDuration);
+          element.setAttribute('animation', {
+            property: 'opacity',
+            from: from,
+            to: to,
+            dur: duration,
+            easing: 'easeInOutQuad'
+          });
+          element.addEventListener('animationcomplete', function handler() {
+            if (to === 0) {
+              element.classList.remove('clickable');
+            } else if (to > 0) {
+              element.classList.add('clickable');
+            }
+            element.removeEventListener('animationcomplete', handler);
+            resolve();
+          }, { once: true });
         });
-    };
+      };
 
-    const animateOpacity = (element, from, to, duration) => {
-        return new Promise(resolve => {
-            element.setAttribute('animation', {
-                property: 'opacity',
-                from: from,
-                to: to,
-                dur: duration,
-                easing: 'easeInOutQuad'
-            });
-            element.addEventListener('animationcomplete', function handler() {
-                if (to === 0) {
-                    element.classList.remove('clickable');
-                } else if (to > 0) {
-                    element.classList.add('clickable');
-                }
-                element.removeEventListener('animationcomplete', handler);
-                resolve();
-            }, { once: true });
-        });
-    };
-
-    for (let i = 0; i < messages.length - 1; i++) {
+      for (let i = 0; i < messages.length - 1; i++) {
         const current = document.querySelector(messages[i].id);
         const next = document.querySelector(messages[i + 1].id);
 
@@ -627,28 +604,28 @@
         await sleep(pauseBeforeFadeIn);
         await animateOpacity(next, 0, 1, animationDuration);
 
-        // Когда появляется msg-three, плавно останавливаем первую музыку и запускаем вторую
+        // Когда появляется msg-three, останавливаем первую музыку и запускаем вторую
         if (next.id === 'msg-three') {
-            await fadeOutAudio(firstMusic, 500); // 1000мс = 1 секунда для затухания
-            secondMusic.components.sound.playSound();
+          firstMusic.components.sound.stopSound();
+          secondMusic.components.sound.playSound();
         }
 
         if (next.id === 'msg-six') {
-            const portalsContainer = document.querySelector('#portals');
-            const portals = portalsContainer.querySelectorAll('a-circle');
-            const portalLight = document.querySelector('#portal-light');
-            
-            await sleep(500);
-            
-            for (const portal of portals) {
-                await animateOpacity(portal, 0, 0.8, animationDuration);
-                await sleep(300);
-            }
-            
-            portalLight.setAttribute('intensity', '1');
+          const portalsContainer = document.querySelector('#portals');
+          const portals = portalsContainer.querySelectorAll('a-circle');
+          const portalLight = document.querySelector('#portal-light');
+          
+          await sleep(500);
+          
+          for (const portal of portals) {
+            await animateOpacity(portal, 0, 0.8, animationDuration);
+            await sleep(300);
+          }
+          
+          portalLight.setAttribute('intensity', '1');
         }
-    }
-});
+      }
+    });
     // -------- Конец Логика переключения на транзитную сцену -------- 
 
     
