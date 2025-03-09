@@ -628,7 +628,7 @@
 
     // После завершения анимации msg-three начинаем затухание первой музыки и запускаем вторую
     if (current.id === 'msg-three') {
-      await fadeOutAudio(firstMusic, 500); // Плавное затухание за 1 секунду
+      await fadeOutAudio(firstMusic, 100); // Плавное затухание за 1 секунду
       secondMusic.components.sound.playSound();
     }
 
