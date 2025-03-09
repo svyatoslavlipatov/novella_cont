@@ -32,9 +32,7 @@
           // Создаём текст
           const text = document.createElement('a-text');
           text.setAttribute('value', data.value);
-          text.setAttribute('font', 'msdf/pixel/pix-msdf.json');
-          text.setAttribute('font-image', 'msdf/pixel/pix.png');
-          text.setAttribute('negate', 'false');
+          text.setAttribute('custom-font', ''); // Используем компонент custom-font
           text.setAttribute('align', 'center');
           text.setAttribute('color', 'white');
           text.setAttribute('position', '0 0 0.01');
