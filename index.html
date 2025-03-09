@@ -617,37 +617,42 @@
   };
 
   for (let i = 0; i < messages.length - 1; i++) {
-    const current = document.querySelector(messages[i].id);
-    const next = document.querySelector(messages[i + 1].id);
+  const current = document.querySelector(messages[i].id);
+  const next = document.querySelector(messages[i + 1].id);
 
-    await sleep(messages[i].delay - animationDuration);
-    await animateOpacity(current, 1, 0, animationDuration);
-    current.parentNode.removeChild(current);
-    await sleep(pauseBeforeFadeIn);
-    await animateOpacity(next, 0, 1, animationDuration);
+  await sleep(messages[i].delay - animationDuration);
+  await animateOpacity(current, 1, 0, animationDuration);
+  current.parentNode.removeChild(current);
+  await sleep(pauseBeforeFadeIn);
 
-    // После завершения анимации msg-three начинаем затухание первой музыки и запускаем вторую
-    if (current.id === 'msg-three') {
-      await fadeOutAudio(firstMusic, 100); // Плавное затухание за 1 секунду
-      secondMusic.components.sound.playSound();
-    }
+  // Запускаем анимацию появления следующего сообщения
+  const nextAnimationPromise = animateOpacity(next, 0, 1, animationDuration);
 
-    if (next.id === 'msg-six') {
-      const portalsContainer = document.querySelector('#portals');
-      const portals = portalsContainer.querySelectorAll('a-circle');
-      const portalLight = document.querySelector('#portal-light');
-      
-      await sleep(500);
-      
-      for (const portal of portals) {
-        await animateOpacity(portal, 0, 0.8, animationDuration);
-        await sleep(300);
-      }
-      
-      portalLight.setAttribute('intensity', '1');
-    }
+  // Если это msg-three, запускаем затухание музыки через половину длительности анимации
+  if (next.id === 'msg-three') {
+    await sleep(animationDuration / 2); // Ждем половину анимации (750 мс)
+    await fadeOutAudio(firstMusic, 500); // Плавное затухание за 500 мс
+    secondMusic.components.sound.playSound(); // Запускаем вторую музыку
   }
-});
+
+  // Ждем завершения анимации появления следующего сообщения
+  await nextAnimationPromise;
+
+  if (next.id === 'msg-six') {
+    const portalsContainer = document.querySelector('#portals');
+    const portals = portalsContainer.querySelectorAll('a-circle');
+    const portalLight = document.querySelector('#portal-light');
+    
+    await sleep(500);
+    
+    for (const portal of portals) {
+      await animateOpacity(portal, 0, 0.8, animationDuration);
+      await sleep(300);
+    }
+    
+    portalLight.setAttribute('intensity', '1');
+  }
+}
 
     
       // Логика переключения обратно на основную сцену
