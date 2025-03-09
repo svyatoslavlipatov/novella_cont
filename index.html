@@ -561,17 +561,17 @@
   firstMusic.components.sound.playSound();
 
   const messages = [
-    { id: '#msg-one', delay: 1000 },
-    { id: '#msg-two', delay: 1000 },
-    { id: '#msg-three', delay: 1000 },
-    { id: '#msg-four', delay: 1000 },
-    { id: '#msg-five', delay: 1000 },
+    { id: '#msg-one', delay: 3000 },
+    { id: '#msg-two', delay: 5000 },
+    { id: '#msg-three', delay: 5000 },
+    { id: '#msg-four', delay: 5000 },
+    { id: '#msg-five', delay: 5000 },
     { id: '#msg-six', delay: 0 }
   ];
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const animationDuration = 1000;
-  const pauseBeforeFadeIn = 1000;
+  const animationDuration = 1500;
+  const pauseBeforeFadeIn = 1500;
 
   const animateOpacity = (element, from, to, duration) => {
     return new Promise(resolve => {
@@ -628,7 +628,7 @@
 
     // После завершения анимации msg-three начинаем затухание первой музыки и запускаем вторую
     if (current.id === 'msg-three') {
-      await fadeOutAudio(firstMusic, 1000); // Плавное затухание за 1 секунду
+      await fadeOutAudio(firstMusic, 500); // Плавное затухание за 1 секунду
       secondMusic.components.sound.playSound();
     }
 
