@@ -628,6 +628,7 @@
 
     // Когда появляется msg-four, плавно останавливаем первую музыку и запускаем вторую
     if (next.id === 'msg-three') {
+      await sleep(1000)
       await fadeOutAudio(firstMusic, 1000); // Плавное затухание за 1 секунду
       secondMusic.components.sound.playSound();
     }
@@ -649,7 +650,7 @@
   }
 });
     // -------- Конец Логика переключения на транзитную сцену -------- 
-    firstMusic.components.sound.stopSound();
+    // firstMusic.components.sound.stopSound();
     
       // Логика переключения обратно на основную сцену
       document.querySelector('#button-back').addEventListener('click', function () {
