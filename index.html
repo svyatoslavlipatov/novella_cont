@@ -73,6 +73,20 @@
           el.setAttribute('position', data.position);
         }
       });
+
+      // Компонент для эффекта наведения
+      AFRAME.registerComponent('hoverable', {
+        init: function () {
+          var el = this.el;
+          el.addEventListener('mouseenter', function () {
+            el.setAttribute('color', '#005F7F');
+          });
+          el.addEventListener('mouseleave', function () {
+            el.setAttribute('color', '#008CBA');
+          });
+        }
+      });
+    
     </script>
 
   </head>
@@ -397,7 +411,7 @@
   <a-entity id="yes-button-seventeen" button="value: Да; position: 0 1.6 0" visible="false"></a-entity>
 
   <!-- Кнопка "Нет" -->
-  <a-entity id="no-button-seventeen" button="value: Нет; position: 0 1.6 0" visible="false"></a-entity>
+  <a-entity id="no-button-seventeen" button="value: Нет; position: 0 0.8 0" visible="false"></a-entity>
 
   <!-- Текст ответа "Ура" -->
   <a-text 
@@ -410,21 +424,6 @@
   <a-text 
     id="accompanier-text-eighteen-no" 
     dialog-text="value: Жаль; position: -1.8 0.2 0.01" 
-    visible="false">
-  </a-text>
-
-
-  <a-text id="accompanier-text-nineteen" 
-    value="Пока!" 
-    custom-font
-    color="#FFFFFF" 
-    align="left" 
-    anchor="left" 
-    baseline="top" 
-    width="3.5" 
-    scale="1 1 1" 
-    position="-1.8 0.2 0.01" 
-    wrapcount="50"
     visible="false">
   </a-text>
 
@@ -520,19 +519,6 @@
     </a-scene>
 
     <script>
-      // Компонент для эффекта наведения
-      AFRAME.registerComponent('hoverable', {
-        init: function () {
-          var el = this.el;
-          el.addEventListener('mouseenter', function () {
-            el.setAttribute('color', '#005F7F');
-          });
-          el.addEventListener('mouseleave', function () {
-            el.setAttribute('color', '#008CBA');
-          });
-        }
-      });
-    
       // Функция для эффекта печати текста
       function typeText(element, text, speed = 5) {
         return new Promise(resolve => {
