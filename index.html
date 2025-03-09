@@ -47,6 +47,34 @@
           el.setAttribute('position', data.position);
         }
       });
+
+      // Компонент текста
+      AFRAME.registerComponent('dialog-text', {
+        schema: {
+          value: { type: 'string', default: '' },
+          position: { type: 'vec3', default: { x: 0, y: 0, z: 0 } }
+        },
+        init: function () {
+          const el = this.el;
+          const data = this.data;
+
+          // Добавляем шрифт через компонент 
+          el.setAttribute('custom-font', '');
+
+          // Остальные общие атрибуты
+          el.setAttribute('color', '#FFFFFF');
+          el.setAttribute('align', 'left');
+          el.setAttribute('anchor', 'left');
+          el.setAttribute('baseline', 'top');
+          el.setAttribute('width', '3.5');
+          el.setAttribute('scale', '1 1 1');
+          el.setAttribute('wrapcount', '50');
+
+          // Уникальные атрибуты
+          el.setAttribute('value', data.value);
+          el.setAttribute('position', data.position);
+        }
+      });
     </script>
 
   </head>
@@ -231,7 +259,13 @@
 
       <a-entity id="accompanier-dialog">
         
-        <a-text id="accompanier-text-one" 
+        <a-text 
+          id="accompanier-text-one" 
+          dialog-text="value: Привет! Ты попал в ядро любого приложения — его back-end.; position: -1.8 0.2 0.01" 
+          visible="true">
+        </a-text>
+
+        <!-- <a-text id="accompanier-text-one" 
           value="Привет! Ты попал в ядро любого приложения — его back-end." 
           custom-font
           color="#FFFFFF" 
@@ -243,7 +277,7 @@
           position="-1.8 0.2 0.01" 
           wrapcount="50"
           visible="true">
-        </a-text>
+        </a-text> -->
 
         <a-text id="accompanier-text-two" 
           value="Я Сопроводитель РПО, и я отвечаю за то, чтобы всё работало как часы: серверы, базы данных, API. Здесь мы создаём невидимую, но самую важную часть программ — их мозги. " 
@@ -518,46 +552,10 @@
     </a-text>
 
     <!-- Кнопка "Да" -->
-<!-- <a-entity id="yes-button-seventeen" position="-1 0.8 0" visible="false">
-  <a-plane 
-    width="1" 
-    height="0.3" 
-    color="#00CC00"
-
-    hoverable>
-  </a-plane>
-  <a-text 
-    value="Да" 
-    custom-font
-    align="center" 
-    color="white" 
-    position="0 0 0.01"
-    width="1"
-    scale="0.8 0.8 0.8">
-  </a-text>
-</a-entity> -->
-
 <a-entity id="yes-button-seventeen" button="value: Да; position: 0 1.6 0" visible="false"></a-entity>
 
 <!-- Кнопка "Нет" -->
-<a-entity id="no-button-seventeen" position="0 0.8 0" visible="false">
-  <a-plane 
-    width="1" 
-    height="0.3" 
-    color="#CC0000"
-  
-    hoverable>
-  </a-plane>
-  <a-text 
-    value="Нет" 
-    custom-font
-    align="center" 
-    color="white" 
-    position="0 0 0.01"
-    width="1"
-    scale="0.8 0.8 0.8">
-  </a-text>
-</a-entity>
+<a-entity id="no-button-seventeen" button="value: Нет; position: 0 1.6 0" visible="false"></a-entity>
 
 <!-- Текст ответа "Ура" -->
 <a-text id="accompanier-text-eighteen-yes" 
