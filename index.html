@@ -538,29 +538,39 @@
         });
       }
     
-      // Функция для плавного затухания звука
-      function fadeOutSound(soundElement, duration = 1000) {
-        return new Promise(resolve => {
-          const sound = soundElement.components.sound;
-          const initialVolume = sound.pool[0].volume; // Текущая громкость
-          const steps = 50; // Количество шагов для затухания
-          const stepTime = duration / steps; // Время на каждый шаг
-          const volumeStep = initialVolume / steps; // Уменьшение громкости за шаг
+// Функция для плавного затухания звука
+function fadeOutSound(soundElement, duration = 1000) {
+  return new Promise(resolve => {
+    const sound = soundElement.components.sound;
+    
+    // Проверяем, что компонент sound существует и инициализирован
+    if (!sound || !sound.isPlaying) {
+      console.warn('Sound component is not ready or not playing');
+      resolve(); // Завершаем промис, если звук не готов
+      return;
+    }
 
-          let currentVolume = initialVolume;
+    // Получаем текущую громкость через метод getVolume
+    const initialVolume = sound.getVolume();
+    const steps = 50; // Количество шагов для затухания
+    const stepTime = duration / steps; // Время на каждый шаг
+    const volumeStep = initialVolume / steps; // Уменьшение громкости за шаг
 
-          const fadeInterval = setInterval(() => {
-            currentVolume -= volumeStep;
-            if (currentVolume <= 0) {
-              currentVolume = 0; // Убеждаемся, что громкость не уходит в минус
-              sound.stopSound(); // Останавливаем звук
-              clearInterval(fadeInterval);
-              resolve();
-            }
-            sound.setVolume(currentVolume); // Устанавливаем новую громкость
-          }, stepTime);
-        });
+    let currentVolume = initialVolume;
+
+    const fadeInterval = setInterval(() => {
+      currentVolume -= volumeStep;
+      if (currentVolume <= 0) {
+        currentVolume = 0; // Убеждаемся, что громкость не уходит в минус
+        sound.stopSound(); // Останавливаем звук
+        clearInterval(fadeInterval);
+        resolve();
+      } else {
+        sound.setVolume(currentVolume); // Устанавливаем новую громкость
       }
+    }, stepTime);
+  });
+}
 
       // -------- Логика переключения на транзитную сцену -------- 
       document.querySelector('#button-next').addEventListener('click', async function () {
