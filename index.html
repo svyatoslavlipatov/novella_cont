@@ -604,8 +604,8 @@
         await sleep(pauseBeforeFadeIn);
         await animateOpacity(next, 0, 1, animationDuration);
 
-        // Когда появляется msg-four, останавливаем первую музыку и запускаем вторую
-        if (next.id === 'msg-four') {
+        // Когда появляется msg-three, останавливаем первую музыку и запускаем вторую
+        if (next.id === 'msg-three') {
           firstMusic.components.sound.stopSound();
           secondMusic.components.sound.playSound();
         }
