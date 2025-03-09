@@ -627,7 +627,7 @@
     await animateOpacity(next, 0, 1, animationDuration);
 
     // Когда появляется msg-four, плавно останавливаем первую музыку и запускаем вторую
-    if (next.id === 'msg-four') {
+    if (next.id === 'msg-three') {
       await fadeOutAudio(firstMusic, 1000); // Плавное затухание за 1 секунду
       secondMusic.components.sound.playSound();
     }
