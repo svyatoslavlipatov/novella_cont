@@ -94,8 +94,8 @@
     <a-scene>      
       <!-- Ассеты -->
       <a-assets>
-        <a-sound id="first-music" src="music/nakal.mp3" autoplay="true" loop="false" volume="0.5"></a-sound>
-        <a-sound id="second-music" src="music/funny.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
+        <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
+        <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
         <audio id="click-sound" src="sounds/blip/blick_click.wav"></audio>
         <audio id="blip2" src="sounds/blip/blip_enter.wav"></audio>
       </a-assets>
@@ -539,80 +539,93 @@
       }
     
       // Логика переключения на транзитную сцену
-      document.querySelector('#button-next').addEventListener('click', async function () {
-        console.log('click');
-        const mainScene = document.querySelector('#main-scene');
-        const transitionScene = document.querySelector('#transition-scene');
-        const buttonNext = document.querySelector('#button-next');
-        const buttonBack = document.querySelector('#button-back');
-        const background = document.querySelector('#background');
-    
-        mainScene.setAttribute('visible', 'false');
-        transitionScene.setAttribute('visible', 'true');
-        buttonNext.classList.remove('clickable');
-        buttonBack.classList.add('clickable');
-        background.setAttribute('environment', 'preset: forest');
-    
-        const messages = [
-          { id: '#msg-one', delay: 10 },
-          { id: '#msg-two', delay: 10 },
-          { id: '#msg-three', delay: 10 },
-          { id: '#msg-four', delay: 10 },
-          { id: '#msg-five', delay: 10 },
-          { id: '#msg-six', delay: 0 }
-        ];
-    
-        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-        const animationDuration = 10;
-        const pauseBeforeFadeIn = 10;
-    
-        const animateOpacity = (element, from, to, duration) => {
-          return new Promise(resolve => {
-            element.setAttribute('animation', {
-              property: 'opacity',
-              from: from,
-              to: to,
-              dur: duration,
-              easing: 'easeInOutQuad'
-            });
-            element.addEventListener('animationcomplete', function handler() {
-              if (to === 0) {
-                element.classList.remove('clickable');
-              } else if (to > 0) {
-                element.classList.add('clickable');
-              }
-              element.removeEventListener('animationcomplete', handler);
-              resolve();
-            }, { once: true });
+    document.querySelector('#button-next').addEventListener('click', async function () {
+      console.log('click');
+      const mainScene = document.querySelector('#main-scene');
+      const transitionScene = document.querySelector('#transition-scene');
+      const buttonNext = document.querySelector('#button-next');
+      const buttonBack = document.querySelector('#button-back');
+      const background = document.querySelector('#background');
+      
+      // Аудио элементы
+      const firstMusic = document.querySelector('#transition-first-music');
+      const secondMusic = document.querySelector('#transition-second-music');
+
+      mainScene.setAttribute('visible', 'false');
+      transitionScene.setAttribute('visible', 'true');
+      buttonNext.classList.remove('clickable');
+      buttonBack.classList.add('clickable');
+      background.setAttribute('environment', 'preset: forest');
+
+      // Запускаем первую музыку
+      firstMusic.components.sound.playSound();
+
+      const messages = [
+        { id: '#msg-one', delay: 1000 },
+        { id: '#msg-two', delay: 1000 },
+        { id: '#msg-three', delay: 1000 },
+        { id: '#msg-four', delay: 1000 },
+        { id: '#msg-five', delay: 1000 },
+        { id: '#msg-six', delay: 0 }
+      ];
+
+      const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+      const animationDuration = 1000;
+      const pauseBeforeFadeIn = 1000;
+
+      const animateOpacity = (element, from, to, duration) => {
+        return new Promise(resolve => {
+          element.setAttribute('animation', {
+            property: 'opacity',
+            from: from,
+            to: to,
+            dur: duration,
+            easing: 'easeInOutQuad'
           });
-        };
-    
-        for (let i = 0; i < messages.length - 1; i++) {
-          const current = document.querySelector(messages[i].id);
-          const next = document.querySelector(messages[i + 1].id);
-    
-          await sleep(messages[i].delay - animationDuration);
-          await animateOpacity(current, 1, 0, animationDuration);
-          current.parentNode.removeChild(current);
-          await sleep(pauseBeforeFadeIn);
-          await animateOpacity(next, 0, 1, animationDuration);
-    
-          if (next.id === 'msg-six') {
-            const portalsContainer = document.querySelector('#portals');
-            const portals = portalsContainer.querySelectorAll('a-circle');
-            const portalLight = document.querySelector('#portal-light');
-            
-            await sleep(500);
-            
-            for (const portal of portals) {
-              await animateOpacity(portal, 0, 0.8, animationDuration);
-              await sleep(300);
+          element.addEventListener('animationcomplete', function handler() {
+            if (to === 0) {
+              element.classList.remove('clickable');
+            } else if (to > 0) {
+              element.classList.add('clickable');
             }
-            
-            portalLight.setAttribute('intensity', '1');
-          }
+            element.removeEventListener('animationcomplete', handler);
+            resolve();
+          }, { once: true });
+        });
+      };
+
+      for (let i = 0; i < messages.length - 1; i++) {
+        const current = document.querySelector(messages[i].id);
+        const next = document.querySelector(messages[i + 1].id);
+
+        await sleep(messages[i].delay - animationDuration);
+        await animateOpacity(current, 1, 0, animationDuration);
+        current.parentNode.removeChild(current);
+        await sleep(pauseBeforeFadeIn);
+        await animateOpacity(next, 0, 1, animationDuration);
+
+        // Когда появляется msg-four, останавливаем первую музыку и запускаем вторую
+        if (next.id === 'msg-four') {
+          firstMusic.components.sound.stopSound();
+          secondMusic.components.sound.playSound();
         }
-      });
+
+        if (next.id === 'msg-six') {
+          const portalsContainer = document.querySelector('#portals');
+          const portals = portalsContainer.querySelectorAll('a-circle');
+          const portalLight = document.querySelector('#portal-light');
+          
+          await sleep(500);
+          
+          for (const portal of portals) {
+            await animateOpacity(portal, 0, 0.8, animationDuration);
+            await sleep(300);
+          }
+          
+          portalLight.setAttribute('intensity', '1');
+        }
+      }
+    });
 
     
       // Логика переключения обратно на основную сцену
