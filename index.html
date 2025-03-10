@@ -634,32 +634,77 @@
             secondMusic.components.sound.playSound();
           }
 
-          // Когда появляется msg-six, появляются порталы и их текст
-          if (next.id === 'msg-six') {
-              const portalsContainer = document.querySelector('#portals');
-              const portals = portalsContainer.querySelectorAll('a-circle');
-              const portalTexts = portalsContainer.querySelectorAll('a-text'); 
-              const portalLight = document.querySelector('#portal-light');
+       // Когда появляется msg-six, плавно показываем порталы
+    if (next.id === 'msg-six') {
+      const portalsContainer = document.querySelector('#portals');
+      const portals = portalsContainer.querySelectorAll('a-circle');
+      const portalTexts = portalsContainer.querySelectorAll('a-text');
+      const portalLight = document.querySelector('#portal-light');
 
-              await sleep(500);
+      await sleep(500);
 
-              // Анимируем порталы и их текст одновременно
-              for (let j = 0; j < portals.length; j++) {
-                const portal = portals[j];
-                const text = portalTexts[j];
-                
-                // Запускаем анимацию для портала
-                const portalPromise = animateOpacity(portal, 0, 0.8, animationDuration);
-                // Запускаем анимацию для текста
-                const textPromise = animateOpacity(text, 0, 1, animationDuration);
-                
-                // Ждем завершения обеих анимаций
-                await Promise.all([portalPromise, textPromise]);
-                await sleep(300); // Задержка между появлением порталов
-              }
+      // Плавное появление порталов с анимацией масштаба и прозрачности
+      for (let j = 0; j < portals.length; j++) {
+        const portal = portals[j];
+        const text = portalTexts[j];
 
-              portalLight.setAttribute('intensity', '1');
-            }
+        // Изначально задаём масштаб 0 и прозрачность 0
+        portal.setAttribute('scale', '0 0 0');
+        portal.setAttribute('opacity', '0');
+        text.setAttribute('scale', '0 0 0');
+        text.setAttribute('opacity', '0');
+
+        // Анимация масштаба портала
+        portal.setAttribute('animation__scale', {
+          property: 'scale',
+          from: '0 0 0',
+          to: '1 1 1',
+          dur: 1000, // Длительность анимации в миллисекундах
+          easing: 'easeInOutQuad'
+        });
+
+        // Анимация прозрачности портала
+        portal.setAttribute('animation__opacity', {
+          property: 'opacity',
+          from: '0',
+          to: '0.8',
+          dur: 1000,
+          easing: 'easeInOutQuad'
+        });
+
+        // Анимация масштаба текста
+        text.setAttribute('animation__scale', {
+          property: 'scale',
+          from: '0 0 0',
+          to: '1 1 1',
+          dur: 1000,
+          easing: 'easeInOutQuad'
+        });
+
+        // Анимация прозрачности текста
+        text.setAttribute('animation__opacity', {
+          property: 'opacity',
+          from: '0',
+          to: '1',
+          dur: 1000,
+          easing: 'easeInOutQuad'
+        });
+
+        // Задержка между появлением порталов
+        await sleep(300);
+      }
+
+      // Плавное включение света
+      portalLight.setAttribute('animation', {
+        property: 'intensity',
+        from: '0',
+        to: '1',
+        dur: 1000,
+        easing: 'easeInOutQuad'
+      });
+    }
+
+
         }
 
         
