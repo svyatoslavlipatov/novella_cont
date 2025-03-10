@@ -557,7 +557,7 @@
         transitionScene.setAttribute('visible', 'true');
         buttonNext.classList.remove('clickable');
         buttonBack.classList.add('clickable');
-        background.setAttribute('environment', 'preset: forest');
+        background.setAttribute('environment', 'preset: checkerboard');
 
         // Запускаем первую музыку
         firstMusic.components.sound.playSound();
@@ -983,7 +983,7 @@ document.querySelector('#rpo-back-to-portals').addEventListener('click', functio
   // Скрываем текущую сцену и показываем сцену с порталами
   rpoScene.setAttribute('visible', 'false');
   transitionScene.setAttribute('visible', 'true');
-  background.setAttribute('environment', 'preset: forest'); // Возвращаем фон с порталами
+  background.setAttribute('environment', 'preset: checkerboard'); // Возвращаем фон с порталами
 
   // Скрываем кнопку "Назад"
   backButton.setAttribute('visible', 'false');
