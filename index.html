@@ -540,21 +540,24 @@
     
       // -------- Логика переключения на транзитную сцену -------- 
       document.querySelector('#button-next').addEventListener('click', async function () {
-  console.log('click');
+  console.log('Переход на transition-scene');
   const mainScene = document.querySelector('#main-scene');
   const transitionScene = document.querySelector('#transition-scene');
   const buttonNext = document.querySelector('#button-next');
   const buttonBack = document.querySelector('#button-back');
   const background = document.querySelector('#background');
-  
-  // Аудио элементы
-  const firstMusic = document.querySelector('#transition-first-music');
-  const secondMusic = document.querySelector('#transition-second-music');
 
+  // Отключаем основную сцену и включаем транзитную
   mainScene.setAttribute('visible', 'false');
   transitionScene.setAttribute('visible', 'true');
+
+  // Убеждаемся, что кнопка "Next" становится некликабельной
   buttonNext.classList.remove('clickable');
   buttonBack.classList.add('clickable');
+
+  // Проверяем состояние кнопки для отладки
+  console.log('button-next clickable:', buttonNext.classList.contains('clickable'));
+
   background.setAttribute('environment', 'preset: forest');
 
   // Запускаем первую музыку
