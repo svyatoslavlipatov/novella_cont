@@ -538,134 +538,116 @@
       }
     
       // -------- Логика переключения на транзитную сцену -------- 
-      // -------- Логика переключения на транзитную сцену --------
       document.querySelector('#button-next').addEventListener('click', async function () {
-        console.log('click');
-        const mainScene = document.querySelector('#main-scene');
-        const transitionScene = document.querySelector('#transition-scene');
-        const buttonNext = document.querySelector('#button-next');
-        const buttonBack = document.querySelector('#button-back');
-        const background = document.querySelector('#background');
+  console.log('click');
+  const mainScene = document.querySelector('#main-scene');
+  const transitionScene = document.querySelector('#transition-scene');
+  const buttonNext = document.querySelector('#button-next');
+  const buttonBack = document.querySelector('#button-back');
+  const background = document.querySelector('#background');
+  
+  // Аудио элементы
+  const firstMusic = document.querySelector('#transition-first-music');
+  const secondMusic = document.querySelector('#transition-second-music');
 
-        // Аудио элементы
-        const firstMusic = document.querySelector('#transition-first-music');
-        const secondMusic = document.querySelector('#transition-second-music');
+  mainScene.setAttribute('visible', 'false');
+  transitionScene.setAttribute('visible', 'true');
+  buttonNext.classList.remove('clickable');
+  buttonBack.classList.add('clickable');
+  background.setAttribute('environment', 'preset: forest');
 
-        // Проверяем, существует ли buttonNext перед началом
-        if (!buttonNext) return;
+  // Запускаем первую музыку
+  firstMusic.components.sound.playSound();
 
-        // Отключаем дальнейшие клики на buttonNext
-        buttonNext.removeEventListener('click', arguments.callee); // Удаляем обработчик
-        mainScene.setAttribute('visible', 'false');
-        transitionScene.setAttribute('visible', 'true');
-        buttonNext.classList.remove('clickable');
-        buttonBack.classList.add('clickable');
-        background.setAttribute('environment', 'preset: forest');
+  const messages = [
+    { id: '#msg-one', delay: 1000 },
+    { id: '#msg-two', delay: 1000 },
+    { id: '#msg-three', delay: 1000 },
+    { id: '#msg-four', delay: 1000 },
+    { id: '#msg-five', delay: 1000 },
+    { id: '#msg-six', delay: 0 }
+  ];
 
-        // Запускаем первую музыку
-        firstMusic.components.sound.playSound();
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+  const animationDuration = 1000;
+  const pauseBeforeFadeIn = 1000;
 
-        const messages = [
-          { id: '#msg-one', delay: 1000 },
-          { id: '#msg-two', delay: 1000 },
-          { id: '#msg-three', delay: 1000 },
-          { id: '#msg-four', delay: 1000 },
-          { id: '#msg-five', delay: 1000 },
-          { id: '#msg-six', delay: 0 }
-        ];
-
-        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-        const animationDuration = 1000;
-        const pauseBeforeFadeIn = 1000;
-
-        const animateOpacity = (element, from, to, duration) => {
-          return new Promise(resolve => {
-            // Проверяем, существует ли элемент перед началом анимации
-            if (!element) {
-              resolve();
-              return;
-            }
-            element.setAttribute('animation', {
-              property: 'opacity',
-              from: from,
-              to: to,
-              dur: duration,
-              easing: 'easeInOutQuad'
-            });
-            element.addEventListener('animationcomplete', function handler() {
-              if (to === 0) {
-                element.classList.remove('clickable');
-              } else if (to > 0) {
-                element.classList.add('clickable');
-              }
-              element.removeEventListener('animationcomplete', handler);
-              resolve();
-            }, { once: true });
-          });
-        };
-
-        // Функция для плавного уменьшения громкости
-        const fadeOutAudio = (audioElement, duration) => {
-          return new Promise(resolve => {
-            const sound = audioElement.components.sound;
-            const initialVolume = sound.pool.children[0].getVolume();
-            const steps = 20;
-            const intervalTime = duration / steps;
-            let currentVolume = initialVolume;
-
-            const fadeInterval = setInterval(() => {
-              currentVolume -= initialVolume / steps;
-              if (currentVolume <= 0) {
-                currentVolume = 0;
-                sound.stopSound();
-                clearInterval(fadeInterval);
-                resolve();
-              }
-              sound.pool.children[0].setVolume(currentVolume);
-            }, intervalTime);
-          });
-        };
-
-        for (let i = 0; i < messages.length - 1; i++) {
-          const current = document.querySelector(messages[i].id);
-          const next = document.querySelector(messages[i + 1].id);
-
-          // Проверяем, существуют ли элементы
-          if (!current || !next) continue;
-
-          await sleep(messages[i].delay - animationDuration);
-          await animateOpacity(current, 1, 0, animationDuration);
-
-          // Удаляем элемент только после завершения анимации
-          if (current.parentNode) {
-            current.parentNode.removeChild(current);
-          }
-
-          await sleep(pauseBeforeFadeIn);
-          await animateOpacity(next, 0, 1, animationDuration);
-
-          if (next.id === 'msg-three') {
-            await sleep(100);
-            await fadeOutAudio(firstMusic, 1000);
-            secondMusic.components.sound.playSound();
-          }
-
-          if (next.id === 'msg-six') {
-            const portalsContainer = document.querySelector('#portals');
-            const portals = portalsContainer.querySelectorAll('a-circle');
-            const portalLight = document.querySelector('#portal-light');
-
-            await sleep(500);
-
-            for (const portal of portals) {
-              await animateOpacity(portal, 0, 0.8, animationDuration);
-              await sleep(300);
-            }
-
-            portalLight.setAttribute('intensity', '1');
-          }
-        }
+  const animateOpacity = (element, from, to, duration) => {
+    return new Promise(resolve => {
+      element.setAttribute('animation', {
+        property: 'opacity',
+        from: from,
+        to: to,
+        dur: duration,
+        easing: 'easeInOutQuad'
       });
+      element.addEventListener('animationcomplete', function handler() {
+        if (to === 0) {
+          element.classList.remove('clickable');
+        } else if (to > 0) {
+          element.classList.add('clickable');
+        }
+        element.removeEventListener('animationcomplete', handler);
+        resolve();
+      }, { once: true });
+    });
+  };
+
+  // Функция для плавного уменьшения громкости
+  const fadeOutAudio = (audioElement, duration) => {
+    return new Promise(resolve => {
+      const sound = audioElement.components.sound;
+      const initialVolume = sound.pool.children[0].getVolume(); // Текущая громкость
+      const steps = 20; // Количество шагов для плавного уменьшения
+      const intervalTime = duration / steps;
+      let currentVolume = initialVolume;
+
+      const fadeInterval = setInterval(() => {
+        currentVolume -= initialVolume / steps;
+        if (currentVolume <= 0) {
+          currentVolume = 0;
+          sound.stopSound(); // Останавливаем звук, когда громкость достигла 0
+          clearInterval(fadeInterval);
+          resolve();
+        }
+        sound.pool.children[0].setVolume(currentVolume); // Устанавливаем новую громкость
+      }, intervalTime);
+    });
+  };
+
+  for (let i = 0; i < messages.length - 1; i++) {
+    const current = document.querySelector(messages[i].id);
+    const next = document.querySelector(messages[i + 1].id);
+
+    await sleep(messages[i].delay - animationDuration);
+    await animateOpacity(current, 1, 0, animationDuration);
+    current.parentNode.removeChild(current);
+    await sleep(pauseBeforeFadeIn);
+    await animateOpacity(next, 0, 1, animationDuration);
+
+    // Когда появляется msg-four, плавно останавливаем первую музыку и запускаем вторую
+    if (next.id === 'msg-three') {
+      await sleep(100)
+      await fadeOutAudio(firstMusic, 1000); // Плавное затухание за 1 секунду
+      secondMusic.components.sound.playSound();
+    }
+
+    if (next.id === 'msg-six') {
+      const portalsContainer = document.querySelector('#portals');
+      const portals = portalsContainer.querySelectorAll('a-circle');
+      const portalLight = document.querySelector('#portal-light');
+      
+      await sleep(500);
+      
+      for (const portal of portals) {
+        await animateOpacity(portal, 0, 0.8, animationDuration);
+        await sleep(300);
+      }
+      
+      portalLight.setAttribute('intensity', '1');
+    }
+  }
+});
     // -------- Конец Логика переключения на транзитную сцену -------- 
 
     
