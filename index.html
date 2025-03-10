@@ -624,17 +624,19 @@
           await sleep(pauseBeforeFadeIn);
           await animateOpacity(next, 0, 1, animationDuration);
 
+          if (next.id === 'msg-three') {
+            // Плавное затухание первой музыки (например, за 2 секунды)
+            await fadeOutSound(firstMusic, 200);
+            
+            // Запуск второй музыки
+            secondMusic.components.sound.playSound();
+          }
+
           // Когда появляется msg-six, запускаем вторую музыку и затухание первой
           if (next.id === 'msg-six') {
             const portalsContainer = document.querySelector('#portals');
             const portals = portalsContainer.querySelectorAll('a-circle');
             const portalLight = document.querySelector('#portal-light');
-
-            // Плавное затухание первой музыки (например, за 2 секунды)
-            await fadeOutSound(firstMusic, 2000);
-            
-            // Запуск второй музыки
-            secondMusic.components.sound.playSound();
 
             await sleep(500);
 
