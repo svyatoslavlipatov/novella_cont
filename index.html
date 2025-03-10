@@ -167,7 +167,7 @@
               color="#00FFFF" 
               opacity="0" >
             </a-circle>
-            <a-text id="txt-portal-one" value="РПО" custom-font position="-2 1.25 -0.5" rotation="0 90 0" align="center" color="white" scale="1 1 1" opacity="1" opacity="0"></a-text>
+            <a-text id="txt-portal-one" value="РПО" custom-font position="-2 1.25 -0.5" rotation="0 90 0" align="center" color="white" scale="1 1 1" opacity="0"></a-text>
            </a-entity>
 
           <!-- Второй портал -->
@@ -179,7 +179,7 @@
               color="#FF00FF" 
               opacity="0" >
             </a-circle>
-            <a-text id="txt-portal-two" value="Дизайн" custom-font position="-1 1.25 -2" rotation="0 0 0" align="center" color="white" scale="1 1 1" opacity="1" opacity="0"></a-text>
+            <a-text id="txt-portal-two" value="Дизайн" custom-font position="-1 1.25 -2" rotation="0 0 0" align="center" color="white" scale="1 1 1" opacity="0"></a-text>
           </a-entity>
 
           <!-- Третий портал -->
@@ -634,22 +634,35 @@
             secondMusic.components.sound.playSound();
           }
 
-          // Когда появляется msg-six, появляются порталы
+          // Когда появляется msg-six, появляются порталы и их текст
           if (next.id === 'msg-six') {
-            const portalsContainer = document.querySelector('#portals');
-            const portals = portalsContainer.querySelectorAll('a-circle');
-            const portalLight = document.querySelector('#portal-light');
+              const portalsContainer = document.querySelector('#portals');
+              const portals = portalsContainer.querySelectorAll('a-circle');
+              const portalTexts = portalsContainer.querySelectorAll('a-text'); 
+              const portalLight = document.querySelector('#portal-light');
 
-            await sleep(500);
+              await sleep(500);
 
-            for (const portal of portals) {
-              await animateOpacity(portal, 0, 0.8, animationDuration);
-              await sleep(300);
+              // Анимируем порталы и их текст одновременно
+              for (let j = 0; j < portals.length; j++) {
+                const portal = portals[j];
+                const text = portalTexts[j];
+                
+                // Запускаем анимацию для портала
+                const portalPromise = animateOpacity(portal, 0, 0.8, animationDuration);
+                // Запускаем анимацию для текста
+                const textPromise = animateOpacity(text, 0, 1, animationDuration);
+                
+                // Ждем завершения обеих анимаций
+                await Promise.all([portalPromise, textPromise]);
+                await sleep(300); // Задержка между появлением порталов
+              }
+
+              portalLight.setAttribute('intensity', '1');
             }
-
-            portalLight.setAttribute('intensity', '1');
-          }
         }
+
+        
       });
 
     
