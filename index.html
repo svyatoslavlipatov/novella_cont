@@ -94,8 +94,6 @@
     <a-scene>      
       <!-- Ассеты -->
       <a-assets>
-        <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
-        <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
         <audio id="click-sound" src="sounds/blip/blick_click.wav"></audio>
         <audio id="blip2" src="sounds/blip/blip_enter.wav"></audio>
       </a-assets>
@@ -134,9 +132,9 @@
       <a-entity id="main-scene">
         <a-sky color="#ECECEC"></a-sky>
         <!-- Кнопка "Next" -->
-        <a-entity id="button-next" position="0 1 -2">
+        <a-entity position="0 1 -2">
           <a-plane 
-            
+            id="button-next" 
             class="clickable" 
             width="1" height="0.4" 
             color="#008CBA"
@@ -151,9 +149,9 @@
         <a-entity position="0 1 -4">
           <a-text id="msg-one" value="Привет!" custom-font  align="center" color="white" scale="2 2 2" opacity="1"></a-text>
           <a-text id="msg-two" value="Ты стоишь на перепутье, кем же тебе стать.." custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-          <a-text id="msg-three" value="На кого идти учиться, столько направлений..." custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-          <a-text id="msg-four" value="Мы факультет ФБКИ и мы готовы тебе помочь!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-          <a-text id="msg-five" value="Мы покажем тебе 5 направлений и покажем суть каждого!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+          <a-text id="msg-three" value="Выбрать направление очень важно, и мы тебе поможем в этом" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+          <a-text id="msg-four" value="Мы покажем тебе 5 направлений нашего факультета" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+          <a-text id="msg-five" value="И покажем суть каждого!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
           <a-text id="msg-six" value="Выбирай!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
         </a-entity>
 
@@ -538,118 +536,81 @@
         });
       }
     
-      // -------- Логика переключения на транзитную сцену -------- 
+      // Логика переключения на транзитную сцену
       document.querySelector('#button-next').addEventListener('click', async function () {
-  console.log('click');
-  const mainScene = document.querySelector('#main-scene');
-  const transitionScene = document.querySelector('#transition-scene');
-  const buttonNext = document.querySelector('#button-next');
-  const buttonBack = document.querySelector('#button-back');
-  const background = document.querySelector('#background');
-  
-  // Аудио элементы
-  const firstMusic = document.querySelector('#transition-first-music');
-  const secondMusic = document.querySelector('#transition-second-music');
-
-  mainScene.setAttribute('visible', 'false');
-  transitionScene.setAttribute('visible', 'true');
-  buttonNext.classList.remove('clickable');
-  buttonBack.classList.add('clickable');
-  background.setAttribute('environment', 'preset: forest');
-
-  // Запускаем первую музыку
-  firstMusic.components.sound.playSound();
-
-  const messages = [
-    { id: '#msg-one', delay: 10 },
-    { id: '#msg-two', delay: 10 },
-    { id: '#msg-three', delay: 10 },
-    { id: '#msg-four', delay: 10 },
-    { id: '#msg-five', delay: 10 },
-    { id: '#msg-six', delay: 0 }
-  ];
-
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const animationDuration = 10;
-  const pauseBeforeFadeIn = 10;
-
-  const animateOpacity = (element, from, to, duration) => {
-    return new Promise(resolve => {
-      element.setAttribute('animation', {
-        property: 'opacity',
-        from: from,
-        to: to,
-        dur: duration,
-        easing: 'easeInOutQuad'
+        console.log('click');
+        const mainScene = document.querySelector('#main-scene');
+        const transitionScene = document.querySelector('#transition-scene');
+        const buttonNext = document.querySelector('#button-next');
+        const buttonBack = document.querySelector('#button-back');
+        const background = document.querySelector('#background');
+    
+        mainScene.setAttribute('visible', 'false');
+        transitionScene.setAttribute('visible', 'true');
+        buttonNext.classList.remove('clickable');
+        buttonBack.classList.add('clickable');
+        background.setAttribute('environment', 'preset: forest');
+    
+        const messages = [
+          { id: '#msg-one', delay: 10 },
+          { id: '#msg-two', delay: 10 },
+          { id: '#msg-three', delay: 10 },
+          { id: '#msg-four', delay: 10 },
+          { id: '#msg-five', delay: 10 },
+          { id: '#msg-six', delay: 0 }
+        ];
+    
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+        const animationDuration = 10;
+        const pauseBeforeFadeIn = 10;
+    
+        const animateOpacity = (element, from, to, duration) => {
+          return new Promise(resolve => {
+            element.setAttribute('animation', {
+              property: 'opacity',
+              from: from,
+              to: to,
+              dur: duration,
+              easing: 'easeInOutQuad'
+            });
+            element.addEventListener('animationcomplete', function handler() {
+              if (to === 0) {
+                element.classList.remove('clickable');
+              } else if (to > 0) {
+                element.classList.add('clickable');
+              }
+              element.removeEventListener('animationcomplete', handler);
+              resolve();
+            }, { once: true });
+          });
+        };
+    
+        for (let i = 0; i < messages.length - 1; i++) {
+          const current = document.querySelector(messages[i].id);
+          const next = document.querySelector(messages[i + 1].id);
+    
+          await sleep(messages[i].delay - animationDuration);
+          await animateOpacity(current, 1, 0, animationDuration);
+          current.parentNode.removeChild(current);
+          await sleep(pauseBeforeFadeIn);
+          await animateOpacity(next, 0, 1, animationDuration);
+    
+          if (next.id === 'msg-six') {
+            const portalsContainer = document.querySelector('#portals');
+            const portals = portalsContainer.querySelectorAll('a-circle');
+            const portalLight = document.querySelector('#portal-light');
+            
+            await sleep(500);
+            
+            for (const portal of portals) {
+              await animateOpacity(portal, 0, 0.8, animationDuration);
+              await sleep(300);
+            }
+            
+            portalLight.setAttribute('intensity', '1');
+          }
+        }
       });
-      element.addEventListener('animationcomplete', function handler() {
-        if (to === 0) {
-          element.classList.remove('clickable');
-        } else if (to > 0) {
-          element.classList.add('clickable');
-        }
-        element.removeEventListener('animationcomplete', handler);
-        resolve();
-      }, { once: true });
-    });
-  };
-
-  // Функция для плавного уменьшения громкости
-  const fadeOutAudio = (audioElement, duration) => {
-    return new Promise(resolve => {
-      const sound = audioElement.components.sound;
-      const initialVolume = sound.pool.children[0].getVolume(); // Текущая громкость
-      const steps = 20; // Количество шагов для плавного уменьшения
-      const intervalTime = duration / steps;
-      let currentVolume = initialVolume;
-
-      const fadeInterval = setInterval(() => {
-        currentVolume -= initialVolume / steps;
-        if (currentVolume <= 0) {
-          currentVolume = 0;
-          sound.stopSound(); // Останавливаем звук, когда громкость достигла 0
-          clearInterval(fadeInterval);
-          resolve();
-        }
-        sound.pool.children[0].setVolume(currentVolume); // Устанавливаем новую громкость
-      }, intervalTime);
-    });
-  };
-
-  for (let i = 0; i < messages.length - 1; i++) {
-    const current = document.querySelector(messages[i].id);
-    const next = document.querySelector(messages[i + 1].id);
-
-    await sleep(messages[i].delay - animationDuration);
-    await animateOpacity(current, 1, 0, animationDuration);
-    current.parentNode.removeChild(current);
-    await sleep(pauseBeforeFadeIn);
-    await animateOpacity(next, 0, 1, animationDuration);
-
-    // Когда появляется msg-four, плавно останавливаем первую музыку и запускаем вторую
-    if (next.id === 'msg-three') {
-      await sleep(100)
-      await fadeOutAudio(firstMusic, 1000); // Плавное затухание за 1 секунду
-      secondMusic.components.sound.playSound();
-    }
-
-    if (next.id === 'msg-six') {
-      const portalsContainer = document.querySelector('#portals');
-      const portals = portalsContainer.querySelectorAll('a-circle');
-      const portalLight = document.querySelector('#portal-light');
-      
-      await sleep(500);
-      
-      for (const portal of portals) {
-        await animateOpacity(portal, 0, 0.8, animationDuration);
-        await sleep(300);
-      }
-      
-      portalLight.setAttribute('intensity', '1');
-    }
-  }
-});
-    // -------- Конец Логика переключения на транзитную сцену -------- 
 
     
       // Логика переключения обратно на основную сцену
