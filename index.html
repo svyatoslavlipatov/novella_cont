@@ -540,41 +540,38 @@
     
       // -------- Логика переключения на транзитную сцену -------- 
       document.querySelector('#button-next').addEventListener('click', async function () {
-  console.log('Переход на transition-scene');
+  console.log('click');
   const mainScene = document.querySelector('#main-scene');
   const transitionScene = document.querySelector('#transition-scene');
   const buttonNext = document.querySelector('#button-next');
   const buttonBack = document.querySelector('#button-back');
   const background = document.querySelector('#background');
+  
+  // Аудио элементы
+  const firstMusic = document.querySelector('#transition-first-music');
+  const secondMusic = document.querySelector('#transition-second-music');
 
-  // Отключаем основную сцену и включаем транзитную
   mainScene.setAttribute('visible', 'false');
   transitionScene.setAttribute('visible', 'true');
-
-  // Убеждаемся, что кнопка "Next" становится некликабельной
   buttonNext.classList.remove('clickable');
   buttonBack.classList.add('clickable');
-
-  // Проверяем состояние кнопки для отладки
-  console.log('button-next clickable:', buttonNext.classList.contains('clickable'));
-
   background.setAttribute('environment', 'preset: forest');
 
   // Запускаем первую музыку
   firstMusic.components.sound.playSound();
 
   const messages = [
-    { id: '#msg-one', delay: 10 },
-    { id: '#msg-two', delay: 10 },
-    { id: '#msg-three', delay: 10 },
-    { id: '#msg-four', delay: 10 },
-    { id: '#msg-five', delay: 10 },
+    { id: '#msg-one', delay: 1000 },
+    { id: '#msg-two', delay: 1000 },
+    { id: '#msg-three', delay: 1000 },
+    { id: '#msg-four', delay: 1000 },
+    { id: '#msg-five', delay: 1000 },
     { id: '#msg-six', delay: 0 }
   ];
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const animationDuration = 10;
-  const pauseBeforeFadeIn = 10;
+  const animationDuration = 1000;
+  const pauseBeforeFadeIn = 1000;
 
   const animateOpacity = (element, from, to, duration) => {
     return new Promise(resolve => {
@@ -631,7 +628,7 @@
 
     // Когда появляется msg-four, плавно останавливаем первую музыку и запускаем вторую
     if (next.id === 'msg-three') {
-      await sleep(1000)
+      await sleep(100)
       await fadeOutAudio(firstMusic, 1000); // Плавное затухание за 1 секунду
       secondMusic.components.sound.playSound();
     }
