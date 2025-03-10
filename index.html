@@ -647,6 +647,9 @@
       for (let j = 0; j < portals.length; j++) {
         const portal = portals[j];
         const text = portalTexts[j];
+        
+        //  класс clickable для взаимодействия
+        portal.classList.add('clickable');
 
         // Изначально задаём масштаб 0 и прозрачность 0
         portal.setAttribute('scale', '0 0 0');
