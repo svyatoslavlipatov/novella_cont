@@ -545,13 +545,21 @@
         const buttonNext = document.querySelector('#button-next');
         const buttonBack = document.querySelector('#button-back');
         const background = document.querySelector('#background');
-    
+        
+        // Аудио элементы
+        const firstMusic = document.querySelector('#transition-first-music');
+        const secondMusic = document.querySelector('#transition-second-music');
+
+        // Переключаем сцены
         mainScene.setAttribute('visible', 'false');
         transitionScene.setAttribute('visible', 'true');
         buttonNext.classList.remove('clickable');
         buttonBack.classList.add('clickable');
         background.setAttribute('environment', 'preset: forest');
-    
+
+        // Запускаем первую музыку
+        firstMusic.components.sound.playSound();
+
         const messages = [
           { id: '#msg-one', delay: 10 },
           { id: '#msg-two', delay: 10 },
@@ -560,11 +568,11 @@
           { id: '#msg-five', delay: 10 },
           { id: '#msg-six', delay: 0 }
         ];
-    
+
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
         const animationDuration = 10;
         const pauseBeforeFadeIn = 10;
-    
+
         const animateOpacity = (element, from, to, duration) => {
           return new Promise(resolve => {
             element.setAttribute('animation', {
@@ -585,29 +593,56 @@
             }, { once: true });
           });
         };
-    
+
+        // Функция для плавного затухания звука
+        const fadeOutSound = (sound, duration) => {
+          return new Promise(resolve => {
+            const initialVolume = sound.getAttribute('volume') || 0.5;
+            let currentVolume = initialVolume;
+            const step = initialVolume / (duration / 100); // Шаг уменьшения громкости
+
+            const fadeInterval = setInterval(() => {
+              currentVolume -= step;
+              if (currentVolume <= 0) {
+                currentVolume = 0;
+                sound.components.sound.stopSound();
+                clearInterval(fadeInterval);
+                resolve();
+              }
+              sound.setAttribute('volume', currentVolume);
+            }, 100);
+          });
+        };
+
         for (let i = 0; i < messages.length - 1; i++) {
           const current = document.querySelector(messages[i].id);
           const next = document.querySelector(messages[i + 1].id);
-    
+
           await sleep(messages[i].delay - animationDuration);
           await animateOpacity(current, 1, 0, animationDuration);
           current.parentNode.removeChild(current);
           await sleep(pauseBeforeFadeIn);
           await animateOpacity(next, 0, 1, animationDuration);
-    
+
+          // Когда появляется msg-six, запускаем вторую музыку и затухание первой
           if (next.id === 'msg-six') {
             const portalsContainer = document.querySelector('#portals');
             const portals = portalsContainer.querySelectorAll('a-circle');
             const portalLight = document.querySelector('#portal-light');
+
+            // Плавное затухание первой музыки (например, за 2 секунды)
+            await fadeOutSound(firstMusic, 2000);
             
+            // Запуск второй музыки
+            secondMusic.components.sound.playSound();
+
             await sleep(500);
-            
+
             for (const portal of portals) {
               await animateOpacity(portal, 0, 0.8, animationDuration);
               await sleep(300);
             }
-            
+
             portalLight.setAttribute('intensity', '1');
           }
         }
