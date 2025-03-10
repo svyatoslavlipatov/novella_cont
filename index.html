@@ -155,10 +155,20 @@
           <a-text id="msg-four" value="Мы покажем тебе 5 направлений нашего факультета" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
           <a-text id="msg-five" value="И покажем суть каждого!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
           <a-text id="msg-six" value="Выбирай!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-        </a-entity>
+        </a-entity> 
 
+
+        const portalConfig = {
+          'portal1': { scene: 'rpo-scene', preset: 'default' },
+          'portal2': { scene: 'dizayn-scene', preset: 'goldmine' },
+          'portal3': { scene: 'turizm-scene', preset: 'egypt' },
+          'portal4': { scene: 'service-scene', preset: 'japan' },
+          'portal5': { scene: 'reklama-scene', preset: 'volcano' }
+        };
+
+        
         <a-entity id="portals">
-          <!-- Первый портал -->
+          <!-- Первый портал (РПО) -->
           <a-entity id="portal1">
             <a-circle 
               position="-2 1 -0.5" 
@@ -168,6 +178,7 @@
               opacity="0" 
               visible="true">
             </a-circle>
+            <a-text id="txt-portal-one" value="РПО" custom-font position="-2 1.25 -0.5" rotation="0 90 0" align="center" color="white" scale="1 1 1" opacity="1"></a-text>
            </a-entity>
 
           <!-- Второй портал -->
@@ -180,6 +191,7 @@
               opacity="0" 
               visible="true">
             </a-circle>
+            <a-text id="txt-portal-two" value="Дизайн" custom-font position="-1 1.25 -2" rotation="0 0 0" align="center" color="white" scale="1 1 1" opacity="1"></a-text>
           </a-entity>
 
           <!-- Третий портал -->
@@ -192,22 +204,11 @@
               opacity="0" 
               visible="true">
             </a-circle>
+            <a-text id="txt-portal-three" value="Туризм" custom-font position="1 1.25 -2"  rotation="0 0 0" align="center" color="white" scale="1 1 1" opacity="1"></a-text>
           </a-entity>
 
           <!-- Четвертый портал -->
           <a-entity id="portal4">
-            <a-circle 
-              position="0 1 1" 
-              rotation="0 -180 0"
-              radius="0.450"
-              color="#FF00FF" 
-              opacity="0" 
-              visible="true">
-            </a-circle>
-          </a-entity>
-
-          <!-- Пятый портал -->
-          <a-entity id="portal5">
             <a-circle 
               position="1.5 1 -0.5" 
               rotation="0 -90 0"
@@ -216,6 +217,20 @@
               opacity="0" 
               visible="true">
             </a-circle>
+            <a-text id="txt-portal-four" value="Сервис" custom-font position="1.5 1.25 -0.5"  rotation="0 -90 0"  align="center" color="white" scale="1 1 1" opacity="1"></a-text>
+          </a-entity>
+
+          <!-- Пятый портал -->
+          <a-entity id="portal5">
+            <a-circle 
+              position="0 1 1" 
+              rotation="0 -180 0"
+              radius="0.450"
+              color="#FF00FF" 
+              opacity="0" 
+              visible="true">
+            </a-circle>
+            <a-text id="txt-portal-five" value="Реклама" custom-font position="0 1.25 1" rotation="0 align="center" color="white" scale="1 1 1" opacity="1"></a-text>
           </a-entity>
         
           <!-- Подсветка снизу (общая для всех порталов) -->
