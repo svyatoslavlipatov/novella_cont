@@ -134,9 +134,8 @@
       <a-entity id="main-scene">
         <a-sky color="#ECECEC"></a-sky>
         <!-- Кнопка "Next" -->
-        <a-entity position="0 1 -2">
+        <a-entity id="button-next" position="0 1 -2">
           <a-plane 
-            id="button-next" 
             class="clickable" 
             width="1" height="0.4" 
             color="#008CBA"
@@ -650,7 +649,7 @@
   }
 });
     // -------- Конец Логика переключения на транзитную сцену -------- 
-    // firstMusic.components.sound.stopSound();
+
     
       // Логика переключения обратно на основную сцену
       document.querySelector('#button-back').addEventListener('click', function () {
