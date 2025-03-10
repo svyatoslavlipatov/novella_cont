@@ -626,13 +626,13 @@
 
           if (next.id === 'msg-three') {
             // Плавное затухание первой музыки (например, за 2 секунды)
-            await fadeOutSound(firstMusic, 200);
+            await fadeOutSound(firstMusic, 400);
             
             // Запуск второй музыки
             secondMusic.components.sound.playSound();
           }
 
-          // Когда появляется msg-six, запускаем вторую музыку и затухание первой
+          // Когда появляется msg-six, появляются порталы
           if (next.id === 'msg-six') {
             const portalsContainer = document.querySelector('#portals');
             const portals = portalsContainer.querySelectorAll('a-circle');
