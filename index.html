@@ -148,6 +148,8 @@
 
       <!-- Транзитная сцена -->
       <a-entity id="transition-scene" visible="false">
+           <!-- Пол для персонажа -->
+   <a-plane position="0 0 -5" rotation="-90 0 0" width="50" height="50" color="#228B22" id="scene-plane"></a-plane>
         <a-entity position="0 1 -4">
           <a-text id="msg-one" value="Привет!" custom-font  align="center" color="white" scale="2 2 2" opacity="1"></a-text>
           <a-text id="msg-two" value="Ты стоишь на перепутье, кем же тебе стать.." custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
@@ -248,8 +250,7 @@
 
       <!-- РПО сцена -->
 <a-entity id="rpo-scene" visible="false">
-   <!-- Пол для персонажа -->
-   <a-plane position="0 0 -5" rotation="-90 0 0" width="50" height="50" color="#228B22" id="scene-plane"></a-plane>
+
   <a-entity position="0 1 -4">
     <a-text id="rpo-msg-one" value="РПО" custom-font align="center" color="white" scale="2 2 2" opacity="1"></a-text>
   </a-entity>
