@@ -761,17 +761,30 @@
           dressing: 'cubes', 
           dressingColor: '#FF0000', 
           horizonColor: '#000000', 
-          skyColor: '#FFFFFF' 
+          skyColor: '#FFFFFF', 
+          fog: 0.5 // Средний уровень тумана
         },
         'portal2': { 
           scene: 'dizayn-scene', 
           preset: 'goldmine', 
           dressing: 'cones', 
-          dressingColor: '#FFD700' 
-        }, // Не указаны horizonColor и skyColor — возьмутся из goldmine
-        'portal3': { scene: 'turizm-scene', preset: 'egypt' }, // Все параметры по умолчанию
-        'portal4': { scene: 'service-scene', preset: 'japan' },
-        'portal5': { scene: 'reklama-scene', preset: 'volcano' }
+          dressingColor: '#FFD700', 
+          fog: 0.8 // Более плотный туман
+        }, // horizonColor и skyColor возьмутся из goldmine
+        'portal3': { 
+          scene: 'turizm-scene', 
+          preset: 'egypt', 
+          fog: 0.2 // Лёгкий туман
+        }, // Остальные параметры по умолчанию
+        'portal4': { 
+          scene: 'service-scene', 
+          preset: 'japan' 
+        }, // Fog по умолчанию из japan
+        'portal5': { 
+          scene: 'reklama-scene', 
+          preset: 'volcano', 
+          fog: 0.9 // Очень плотный туман
+        }
       };
 
       // Единая функция инициализации порталов
@@ -798,6 +811,7 @@
             if (config.dressingColor) envString += `; dressingColor: ${config.dressingColor}`;
             if (config.horizonColor) envString += `; horizonColor: ${config.horizonColor}`;
             if (config.skyColor) envString += `; skyColor: ${config.skyColor}`;
+            if (config.fog !== undefined) envString += `; fog: ${config.fog}`; // Добавляем fog, если указан
             
             background.setAttribute('environment', envString);
 
