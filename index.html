@@ -133,7 +133,6 @@
 
       <!-- Основная сцена -->
       <a-entity id="main-scene">
-        <a-sky color="#ECECEC"></a-sky>
         <!-- Кнопка "Next" -->
         <a-entity position="0 1 -2">
           <a-plane 
@@ -249,7 +248,7 @@
 
       <!-- РПО сцена -->
 <a-entity id="rpo-scene" visible="false">
-  <a-sky color="#ECECEC"></a-sky>
+  <a-entity id="background" environment="preset: default;"></a-entity>
   <a-entity position="0 1 -4">
     <a-text id="rpo-msg-one" value="РПО" custom-font align="center" color="white" scale="2 2 2" opacity="1"></a-text>
   </a-entity>
@@ -500,7 +499,6 @@
 
       <!-- Дизайн сцена -->
       <a-entity id="dizayn-scene" visible="false">
-        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="dizayn-msg-one" value="DIZAYN" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -508,7 +506,6 @@
 
       <!-- Туризм сцена -->
       <a-entity id="turizm-scene" visible="false">
-        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="turizm-msg-one" value="TURIZM" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -516,7 +513,6 @@
       
       <!-- Сервис сцена -->
       <a-entity id="service-scene" visible="false">
-        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="service-msg-one" value="SERVICE" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -524,7 +520,6 @@
 
       <!-- Реклама сцена -->
       <a-entity id="reklama-scene" visible="false">
-        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="reklama-msg-one" value="REKLAMA" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
