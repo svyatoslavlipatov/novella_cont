@@ -755,9 +755,21 @@
 
       // Объект с конфигурацией порталов
       const portalConfig = {
-        'portal1': { scene: 'rpo-scene', preset: 'default' },
-        'portal2': { scene: 'dizayn-scene', preset: 'goldmine' },
-        'portal3': { scene: 'turizm-scene', preset: 'egypt' },
+        'portal1': { 
+          scene: 'rpo-scene', 
+          preset: 'default', 
+          dressing: 'cubes', 
+          dressingColor: '#FF0000', 
+          horizonColor: '#000000', 
+          skyColor: '#FFFFFF' 
+        },
+        'portal2': { 
+          scene: 'dizayn-scene', 
+          preset: 'goldmine', 
+          dressing: 'cones', 
+          dressingColor: '#FFD700' 
+        }, // Не указаны horizonColor и skyColor — возьмутся из goldmine
+        'portal3': { scene: 'turizm-scene', preset: 'egypt' }, // Все параметры по умолчанию
         'portal4': { scene: 'service-scene', preset: 'japan' },
         'portal5': { scene: 'reklama-scene', preset: 'volcano' }
       };
@@ -769,7 +781,7 @@
         const background = document.querySelector('#background');
         const nextButton = document.querySelector('#next-text-button');
 
-        Object.entries(portalConfig).forEach(([portalId, { scene, preset }]) => {
+        Object.entries(portalConfig).forEach(([portalId, config]) => {
           document.querySelector(`#${portalId} a-circle`).addEventListener('click', async () => {
             console.log(`${portalId} clicked`);
             
@@ -778,11 +790,19 @@
             
             // Переключаем сцены
             transitionScene.setAttribute('visible', 'false');
-            document.querySelector(`#${scene}`).setAttribute('visible', 'true');
-            background.setAttribute('environment', `preset: ${preset}`);
+            document.querySelector(`#${config.scene}`).setAttribute('visible', 'true');
+
+            // Формируем строку для environment с учётом всех параметров
+            let envString = `preset: ${config.preset}`;
+            if (config.dressing) envString += `; dressing: ${config.dressing}`;
+            if (config.dressingColor) envString += `; dressingColor: ${config.dressingColor}`;
+            if (config.horizonColor) envString += `; horizonColor: ${config.horizonColor}`;
+            if (config.skyColor) envString += `; skyColor: ${config.skyColor}`;
+            
+            background.setAttribute('environment', envString);
 
             // Обработка специальной логики для rpo-scene
-            if (scene === 'rpo-scene') {
+            if (config.scene === 'rpo-scene') {
               const firstText = document.querySelector('#accompanier-text-one');
               await typeText(firstText, firstText.getAttribute('value'));
               nextButton.setAttribute('visible', 'true');
