@@ -749,49 +749,54 @@
 
       // Объект с конфигурацией порталов
       const portalConfig = {
-        'portal1': { scene: 'rpo-scene', preset: 'default' },
-        'portal2': { scene: 'dizayn-scene', preset: 'goldmine' },
-        'portal3': { scene: 'turizm-scene', preset: 'egypt' },
-        'portal4': { scene: 'service-scene', preset: 'japan' },
-        'portal5': { scene: 'reklama-scene', preset: 'volcano' }
+        'portal1': { 
+          scene: 'rpo-scene', 
+          environment: {
+            preset: 'default',
+            skyType: 'color',
+            skyColor: '#1a1a1a', // Темное небо
+            fog: 0.8,           // Туман 0.8
+            ground: 'flat',
+            groundColor: '#333333'
+          }
+        },
+        'portal2': { scene: 'dizayn-scene', environment: { preset: 'goldmine' } },
+        'portal3': { scene: 'turizm-scene', environment: { preset: 'egypt' } },
+        'portal4': { scene: 'service-scene', environment: { preset: 'japan' } },
+        'portal5': { scene: 'reklama-scene', environment: { preset: 'volcano' } }
       };
 
       // Единая функция инициализации порталов
       function initializePortals() {
-        const portals = document.querySelector('#portals').querySelectorAll('a-circle');
-        const transitionScene = document.querySelector('#transition-scene');
-        const background = document.querySelector('#background');
-        const nextButton = document.querySelector('#next-text-button');
+      const portals = document.querySelector('#portals').querySelectorAll('a-circle');
+      const transitionScene = document.querySelector('#transition-scene');
+      const background = document.querySelector('#background');
+      const nextButton = document.querySelector('#next-text-button');
 
-        Object.entries(portalConfig).forEach(([portalId, { scene, preset }]) => {
-          document.querySelector(`#${portalId} a-circle`).addEventListener('click', async () => {
-            console.log(`${portalId} clicked`);
-            
-            portals.forEach(portal => portal.classList.remove('clickable'));
-            
-            transitionScene.setAttribute('visible', 'false');
-            document.querySelector(`#${scene}`).setAttribute('visible', 'true');
+      Object.entries(portalConfig).forEach(([portalId, { scene, environment }]) => {
+        document.querySelector(`#${portalId} a-circle`).addEventListener('click', async () => {
+          console.log(`${portalId} clicked`);
+          
+          // Отключаем кликабельность всех порталов
+          portals.forEach(portal => portal.classList.remove('clickable'));
+          
+          // Переключаем сцены
+          transitionScene.setAttribute('visible', 'false');
+          document.querySelector(`#${scene}`).setAttribute('visible', 'true');
+          
+          // Устанавливаем настройки окружения для текущей сцены
+          background.setAttribute('environment', environment);
 
-            // Кастомные параметры для rpo-scene
-            if (scene === 'rpo-scene') {
-              background.setAttribute('environment', {
-                preset: 'default',
-                skyType: 'color',
-                skyColor: '#1a1a1a',
-                fog: 0.8,
-                ground: 'flat',
-                groundColor: '#333333'
-              });
-              const firstText = document.querySelector('#accompanier-text-one');
-              await typeText(firstText, firstText.getAttribute('value'));
-              nextButton.setAttribute('visible', 'true');
-              nextButton.querySelector('a-plane').classList.add('clickable');
-            } else {
-              background.setAttribute('environment', `preset: ${preset}`);
-            }
-          });
+          // Логика для rpo-scene
+          if (scene === 'rpo-scene') {
+            const firstText = document.querySelector('#accompanier-text-one');
+            await typeText(firstText, firstText.getAttribute('value'));
+            nextButton.setAttribute('visible', 'true');
+            nextButton.querySelector('a-plane').classList.add('clickable');
+          }
         });
-      }
+      });
+    }
 
       // Инициализация
       initializePortals();
