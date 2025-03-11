@@ -149,7 +149,7 @@
       <!-- Транзитная сцена -->
       <a-entity id="transition-scene" visible="false">
            <!-- Пол для персонажа -->
-   <a-plane position="0 0 -5" rotation="-90 0 0" width="50" height="50" color="#228B22" id="scene-plane"></a-plane>
+   <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#2e2e2e" emissive="121212" id="scene-plane"></a-plane>
         <a-entity position="0 1 -4">
           <a-text id="msg-one" value="Привет!" custom-font  align="center" color="white" scale="2 2 2" opacity="1"></a-text>
           <a-text id="msg-two" value="Ты стоишь на перепутье, кем же тебе стать.." custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
@@ -225,7 +225,7 @@
           <a-light 
             id="portal-light" 
             type="spot" 
-            penumbra="0.25"
+            penumbra="0.1"
             color="#FFFFFF" 
             intensity="0"
             position="0 6 0" 
