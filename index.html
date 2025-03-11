@@ -224,7 +224,7 @@
           <a-light 
             id="portal-light" 
             type="spot" 
-            penumbra="0.15"
+            penumbra="0.25"
             color="#FFFFFF" 
             intensity="0"
             position="0 6 0" 
@@ -659,7 +659,7 @@
       portalLight.setAttribute('animation', {
         property: 'intensity',
         from: '0',
-        to: '30',
+        to: '55',
         dur: 1000,
         easing: 'easeInOutQuad'
       });
@@ -718,14 +718,6 @@
         await sleep(300);
       }
 
-      // // Плавное включение света
-      // portalLight.setAttribute('animation', {
-      //   property: 'intensity',
-      //   from: '0',
-      //   to: '3',
-      //   dur: 1000,
-      //   easing: 'easeInOutQuad'
-      // });
     }
 
 
@@ -1023,7 +1015,7 @@ document.querySelector('#rpo-back-to-portals').addEventListener('click', functio
       portal.classList.add('clickable');
     }
   });
-  portalLight.setAttribute('intensity', '3');
+  portalLight.setAttribute('intensity', '55');
 
   // Показываем последний текст сцены перехода
   const msgSix = document.querySelector('#msg-six');
