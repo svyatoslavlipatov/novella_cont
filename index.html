@@ -498,7 +498,6 @@
 
       <!-- Дизайн сцена -->
       <a-entity id="dizayn-scene" visible="false">
-        <a-entity id="rpo-background" environment="preset: forest; fog: 1; active: false"></a-entity>
         <a-entity position="0 1 -4">
           <a-text id="dizayn-msg-one" value="DIZAYN" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -743,7 +742,7 @@
       // Объект с конфигурацией порталов
       const portalConfig = {
         'portal1': { scene: 'rpo-scene', preset: 'default' },
-        'portal2': { scene: 'dizayn-scene', preset: 'goldmine' },
+        'portal2': { scene: 'dizayn-scene', preset: 'none' },
         'portal3': { scene: 'turizm-scene', preset: 'egypt' },
         'portal4': { scene: 'service-scene', preset: 'japan' },
         'portal5': { scene: 'reklama-scene', preset: 'volcano' }
