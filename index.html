@@ -562,7 +562,7 @@
         transitionScene.setAttribute('visible', 'true');
         buttonNext.classList.remove('clickable');
         buttonBack.classList.add('clickable');
-        background.setAttribute('environment', 'preset: checkerboard');
+        background.setAttribute('environment', 'preset: none');
 
         // Запускаем первую музыку
         firstMusic.components.sound.playSound();
@@ -741,8 +741,8 @@
 
       // Объект с конфигурацией порталов
       const portalConfig = {
-        'portal1': { scene: 'rpo-scene', preset: 'default' },
-        'portal2': { scene: 'dizayn-scene', preset: 'none' },
+        'portal1': { scene: 'rpo-scene', preset: 'checkerboard' },
+        'portal2': { scene: 'dizayn-scene', preset: 'default' },
         'portal3': { scene: 'turizm-scene', preset: 'egypt' },
         'portal4': { scene: 'service-scene', preset: 'japan' },
         'portal5': { scene: 'reklama-scene', preset: 'volcano' }
@@ -990,7 +990,7 @@ document.querySelector('#rpo-back-to-portals').addEventListener('click', functio
   // Скрываем текущую сцену и показываем сцену с порталами
   rpoScene.setAttribute('visible', 'false');
   transitionScene.setAttribute('visible', 'true');
-  background.setAttribute('environment', 'preset: checkerboard'); // Возвращаем фон с порталами
+  background.setAttribute('environment', 'preset: none'); // Возвращаем фон с порталами
 
   // Скрываем кнопку "Назад"
   backButton.setAttribute('visible', 'false');
