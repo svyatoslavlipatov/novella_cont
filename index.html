@@ -133,6 +133,7 @@
 
       <!-- Основная сцена -->
       <a-entity id="main-scene">
+        <a-sky color="#ECECEC"></a-sky>
         <!-- Кнопка "Next" -->
         <a-entity position="0 1 -2">
           <a-plane 
@@ -248,6 +249,7 @@
 
       <!-- РПО сцена -->
 <a-entity id="rpo-scene" visible="false">
+  <a-sky color="#ECECEC"></a-sky>
   <a-entity position="0 1 -4">
     <a-text id="rpo-msg-one" value="РПО" custom-font align="center" color="white" scale="2 2 2" opacity="1"></a-text>
   </a-entity>
@@ -498,6 +500,7 @@
 
       <!-- Дизайн сцена -->
       <a-entity id="dizayn-scene" visible="false">
+        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="dizayn-msg-one" value="DIZAYN" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -505,6 +508,7 @@
 
       <!-- Туризм сцена -->
       <a-entity id="turizm-scene" visible="false">
+        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="turizm-msg-one" value="TURIZM" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -512,6 +516,7 @@
       
       <!-- Сервис сцена -->
       <a-entity id="service-scene" visible="false">
+        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="service-msg-one" value="SERVICE" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -519,6 +524,7 @@
 
       <!-- Реклама сцена -->
       <a-entity id="reklama-scene" visible="false">
+        <a-sky color="#ECECEC"></a-sky>
         <a-entity position="0 1 -4">
           <a-text id="reklama-msg-one" value="REKLAMA" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
         </a-entity>
@@ -749,36 +755,11 @@
 
       // Объект с конфигурацией порталов
       const portalConfig = {
-        'portal1': { 
-          scene: 'rpo-scene', 
-          preset: 'default', 
-          dressing: 'towers', 
-          dressingColor: '#613d3d', 
-          horizonColor: '#000000', 
-          skyColor: '#000000', 
-          fog: 1 // Средний уровень тумана
-        },
-        'portal2': { 
-          scene: 'dizayn-scene', 
-          preset: 'goldmine', 
-          dressing: 'cones', 
-          dressingColor: '#FFD700', 
-          fog: 0.8 // Более плотный туман
-        }, // horizonColor и skyColor возьмутся из goldmine
-        'portal3': { 
-          scene: 'turizm-scene', 
-          preset: 'egypt', 
-          fog: 0.2 // Лёгкий туман
-        }, // Остальные параметры по умолчанию
-        'portal4': { 
-          scene: 'service-scene', 
-          preset: 'japan' 
-        }, // Fog по умолчанию из japan
-        'portal5': { 
-          scene: 'reklama-scene', 
-          preset: 'volcano', 
-          fog: 0.9 // Очень плотный туман
-        }
+        'portal1': { scene: 'rpo-scene', preset: 'default' },
+        'portal2': { scene: 'dizayn-scene', preset: 'goldmine' },
+        'portal3': { scene: 'turizm-scene', preset: 'egypt' },
+        'portal4': { scene: 'service-scene', preset: 'japan' },
+        'portal5': { scene: 'reklama-scene', preset: 'volcano' }
       };
 
       // Единая функция инициализации порталов
@@ -788,7 +769,7 @@
         const background = document.querySelector('#background');
         const nextButton = document.querySelector('#next-text-button');
 
-        Object.entries(portalConfig).forEach(([portalId, config]) => {
+        Object.entries(portalConfig).forEach(([portalId, { scene, preset }]) => {
           document.querySelector(`#${portalId} a-circle`).addEventListener('click', async () => {
             console.log(`${portalId} clicked`);
             
@@ -797,20 +778,11 @@
             
             // Переключаем сцены
             transitionScene.setAttribute('visible', 'false');
-            document.querySelector(`#${config.scene}`).setAttribute('visible', 'true');
-
-            // Формируем строку для environment с учётом всех параметров
-            let envString = `preset: ${config.preset}`;
-            if (config.dressing) envString += `; dressing: ${config.dressing}`;
-            if (config.dressingColor) envString += `; dressingColor: ${config.dressingColor}`;
-            if (config.horizonColor) envString += `; horizonColor: ${config.horizonColor}`;
-            if (config.skyColor) envString += `; skyColor: ${config.skyColor}`;
-            if (config.fog !== undefined) envString += `; fog: ${config.fog}`; // Добавляем fog, если указан
-            
-            background.setAttribute('environment', envString);
+            document.querySelector(`#${scene}`).setAttribute('visible', 'true');
+            background.setAttribute('environment', `preset: ${preset}`);
 
             // Обработка специальной логики для rpo-scene
-            if (config.scene === 'rpo-scene') {
+            if (scene === 'rpo-scene') {
               const firstText = document.querySelector('#accompanier-text-one');
               await typeText(firstText, firstText.getAttribute('value'));
               nextButton.setAttribute('visible', 'true');
