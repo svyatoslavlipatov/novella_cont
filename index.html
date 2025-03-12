@@ -96,8 +96,7 @@
       <!-- Ассеты -->
       <a-assets>
         <!-- 3д модели -->
-        <a-asset-item id="rpo-server-o" src="models/rpo/server/server.obj"></a-asset-item>
-        <a-asset-item id="rpo-server-m" src="models/rpo/server/server.mtl"></a-asset-item>
+         <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
 
 
         <!-- Звуки -->
@@ -154,7 +153,6 @@
 
       <!-- Транзитная сцена -->
       <a-entity id="transition-scene" visible="false">
-        <a-entity obj-model="obj: #rpo-server-o; mtl: #rpo-server-m">   </a-entity>
            <!-- Пол для персонажа -->
    <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#2e2e2e" emissive="#121212" id="scene-plane"></a-plane>
         <!-- Цвет неба -->
@@ -262,8 +260,7 @@
 
 
   <a-entity id="rpo-objects"> 
-    <a-entity obj-model="obj: #rpo-server-o; mtl: #rpo-server-m">   </a-entity>
-
+    <a-entity gltf-model="#rpo-server"> </a-entity>
   </a-entity>
 
   <a-entity position="0 1 -4">
