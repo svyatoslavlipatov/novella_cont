@@ -1,5 +1,7 @@
 <html>
   <head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
     <script>
@@ -99,8 +101,8 @@
          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
 
         <!-- Видосики -->
+        <video id="code" preload="auto" src="objects/rpo/videos/code.mp4" autoplay loop="true" muted webkit-playsinline playsinline></video>
 
-        
         <!-- Звуки -->
         <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
         <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="true" volume="0.5"></a-sound> 
@@ -260,6 +262,9 @@
 
       <!-- РПО сцена -->
       <a-entity id="rpo-scene" visible="false">
+
+        <!-- Using the asset management system. -->
+  <a-video src="#code" width="16" height="9" position="0 0 -20"></a-video>
 
       <a-light 
       id="portal-light" 
