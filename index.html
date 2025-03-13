@@ -87,6 +87,22 @@
           });
         }
       });
+
+      AFRAME.registerComponent('play-video-on-click', {
+        init: function () {
+          var el = this.el; // Ссылка на сущность (portal1)
+          var video = document.querySelector('#rpo-video-code'); // Ссылка на видео элемент
+          
+          // Добавляем обработчик события клика
+          el.addEventListener('click', function () {
+            // Проверяем, существует ли видео элемент
+            if (video) {
+              // Запускаем воспроизведение видео
+              video.components.material.data.src.play();
+            }
+          });
+        }
+      });
     
     </script>
 
@@ -109,9 +125,6 @@
         <video id="code" autoplay loop="true" muted src="objects/rpo/videos/code.mp4"></video>
 
       </a-assets>
-
-      <a-video src="#code" width="16" height="9" position="0 0 0"></a-video>
-
 
       <!-- Камера с raycaster для управления мышью -->
       <a-camera 
@@ -181,7 +194,8 @@
               rotation="0 90 0"
               radius="0.450"
               color="#00FFFF" 
-              opacity="0" >
+              opacity="0" 
+              play-video-on-click>
             </a-circle>
             <a-text id="txt-portal-one" value="Прикладная информатика \n (Разработка ПО)" custom-font position="-2 1.7 -0.5"  scale="0.5 1 1"  rotation="0 90 0" align="center" color="white"opacity="0"></a-text>
            </a-entity>
@@ -280,6 +294,8 @@
   <a-entity id="rpo-objects"> 
     <a-entity gltf-model="#rpo-server" position="4 1 -5" rotation="0 -30 0"> </a-entity>
     <a-entity gltf-model="#rpo-server" position="4 1 -5"> </a-entity>
+
+    <a-video id="rpo-video-code" src="#code" width="16" height="9" position="0 0 0"></a-video>
   </a-entity>
 
   <a-entity position="0 1 -4">
