@@ -99,8 +99,12 @@
          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
 
         <!-- Видосики -->
-        <video id="code" autoplay loop="true" muted="true" src="objects/rpo/videos/code.mp4"></video>
+        <video id="videoBunny" preload="auto" src="https://cdn.aframe.io/videos/bunny.mp4"
+         width="160" height="90" autoplay="" loop="true" crossorigin="anonymous" muted="" playsinline="" 
+         webkit-playsinline=""></video>
         
+        
+
         <!-- Звуки -->
         <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
         <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="true" volume="0.5"></a-sound> 
@@ -140,6 +144,11 @@
 
       <!-- Основная сцена -->
       <a-entity id="main-scene">
+
+        <a-entity material="shader: flat; src: #videoBunny" geometry="primitive: plane; width: 160; height: 90;" position="0 60 0" rotation="0 35 0">
+        </a-entity>
+
+
         <!-- Кнопка "Next" -->
         <a-entity position="0 1 -2">
           <a-plane 
@@ -155,9 +164,6 @@
 
       <!-- Транзитная сцена -->
       <a-entity id="transition-scene" visible="false">
-
-        <!-- Using the asset management system. -->
-        <a-video src="#code" width="16" height="9" position="0 0 2"></a-video>
 
            <!-- Пол для персонажа -->
    <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#2e2e2e" emissive="#121212" id="scene-plane"></a-plane>
@@ -262,19 +268,18 @@
       </a-entity>
 
       <!-- РПО сцена -->
-<a-entity id="rpo-scene" visible="false">
+      <a-entity id="rpo-scene" visible="false">
 
-  <a-light 
-  id="portal-light" 
-  type="spot" 
-  penumbra="0.1"
-  color="#FFFFFF" 
-  intensity="10"
-  position="0 6 0" 
-  rotation="-90 0 0"
-  angle="45" 
->
-</a-light>
+      <a-light 
+      id="portal-light" 
+      type="spot" 
+      penumbra="0.1"
+      color="#FFFFFF" 
+      intensity="10"
+      position="0 6 0" 
+      rotation="-90 0 0"
+      angle="45" >
+    </a-light>
 
   <a-entity id="rpo-objects"> 
     <a-entity gltf-model="#rpo-server" position="4 1 -5" rotation="0 -30 0"> </a-entity>
