@@ -2,6 +2,7 @@
   <head>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
     <script>
       // Шрифт для текста
       AFRAME.registerComponent('custom-font', {
@@ -141,8 +142,9 @@
 
       <!-- Основная сцена -->
       <a-entity id="main-scene">
-
+        <a-entity geometry="primitive:box;" material="shader:gif;src:url(objects/rpo/gifs/code.gif);color:green;opacity:.8"></a-entity>
         <a-plane position="0 1.5 -5" width="4" height="2" src="#codingGif"></a-plane>
+
         <!-- Кнопка "Next" -->
         <a-entity position="0 1 -2">
           <a-plane 
