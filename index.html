@@ -99,7 +99,7 @@
          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
 
         <!-- Гифки -->
-        <img id="codingGif" src="path/to/coding.gif">
+        <img id="codingGif" src="objects/rpo/gifs/code.gif">
 
 
         <!-- Звуки -->
@@ -140,8 +140,9 @@
       <a-entity id="background" environment="preset: starry;"></a-entity>
 
       <!-- Основная сцена -->
-      <a-plane position="0 1.5 -5" width="4" height="2" src="#codingGif"></a-plane>
       <a-entity id="main-scene">
+
+        <a-plane position="0 1.5 -5" width="4" height="2" src="#codingGif"></a-plane>
         <!-- Кнопка "Next" -->
         <a-entity position="0 1 -2">
           <a-plane 
