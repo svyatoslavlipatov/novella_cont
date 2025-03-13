@@ -2,7 +2,6 @@
   <head>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/libgif/1.0.0/libgif.js"></script>
     <script>
       // Шрифт для текста
       AFRAME.registerComponent('custom-font', {
@@ -89,32 +88,6 @@
         }
       });
     
-      AFRAME.registerComponent('gif-player', {
-        init: function () {
-          const el = this.el;
-          const img = new Image();
-          img.src = this.data.src;
-          img.onload = () => {
-            const gif = new SuperGif({ gif: img });
-            gif.load(() => {
-              const canvas = gif.get_canvas();
-              el.getObject3D('mesh').material.map = new THREE.Texture(canvas);
-              el.getObject3D('mesh').material.needsUpdate = true;
-
-              function animate() {
-                gif.move_relative(1); // Переход к следующему кадру
-                el.getObject3D('mesh').material.map.needsUpdate = true;
-                requestAnimationFrame(animate);
-              }
-              animate();
-            });
-          };
-        },
-        schema: {
-          src: { type: 'string' }
-        }
-      });
-
     </script>
 
   </head>
@@ -169,11 +142,6 @@
       <!-- Основная сцена -->
       
       <a-entity id="main-scene">
-
-        <a-plane position="0 1.5 -5" width="4" height="2" src="#codingGif"></a-plane>
-
-        <a-plane position="0 1.5 -5" width="4" height="2" gif-player="objects/rpo/gifs/code.gif"></a-plane>
-
         <!-- Кнопка "Next" -->
         <a-entity position="0 1 -2">
           <a-plane 
