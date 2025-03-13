@@ -102,6 +102,7 @@
         <img id="codingGif" src="objects/rpo/gifs/code.gif">
 
 
+
         <!-- Звуки -->
         <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
         <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="true" volume="0.5"></a-sound> 
@@ -140,8 +141,19 @@
       <a-entity id="background" environment="preset: starry;"></a-entity>
 
       <!-- Основная сцена -->
-      
+
+
       <a-entity id="main-scene">
+
+        <a-plane 
+        position="0 1.5 -2" 
+        width="2" 
+        height="2" 
+        material="src: url(objects/rpo/gifs/code.gif); transparent: true">
+      </a-plane>
+
+      <a-plane position="0 1.5 -5" width="4" height="2" src="#codingGif"></a-plane>
+
         <!-- Кнопка "Next" -->
         <a-entity position="0 1 -2">
           <a-plane 
