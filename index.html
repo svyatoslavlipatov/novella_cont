@@ -1037,6 +1037,12 @@ document.querySelector('#rpo-back-to-portals').addEventListener('click', functio
   const portals = document.querySelector('#portals').querySelectorAll('a-circle');
   const portalLight = document.querySelector('#portal-light');
 
+  // Добавляем остановку видео
+  const video = document.querySelector('#rpo-video-code');
+  if (video) {
+    video.components.material.data.src.pause();
+  }
+
   // Скрываем текущую сцену и показываем сцену с порталами
   rpoScene.setAttribute('visible', 'false');
   transitionScene.setAttribute('visible', 'true');
