@@ -95,6 +95,7 @@
     <a-scene>      
       <!-- Ассеты -->
       <a-assets>
+
         <!-- 3д модели -->
          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
   
@@ -104,6 +105,11 @@
         <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="true" volume="0.5"></a-sound> 
         <audio id="click-sound" src="sounds/blip/blick_click.wav"></audio>
         <audio id="blip2" src="sounds/blip/blip_enter.wav"></audio>
+
+
+        <!-- Добавляем видео -->
+        <video id="rpo-video" src="objects/rpo/videos/code.mp4" preload="auto" muted loop></video>
+        
       </a-assets>
 
       <!-- Камера с raycaster для управления мышью -->
@@ -271,6 +277,17 @@
 </a-light>
 
   <a-entity id="rpo-objects"> 
+    <!-- Добавляем видео -->
+    <a-video 
+      id="rpo-video-plane"
+      src="#rpo-video"
+      width="4"
+      height="2.25"
+      position="0 2 -4"
+      rotation="0 0 0"
+      visible="false"
+    ></a-video>
+
     <a-entity gltf-model="#rpo-server" position="4 1 -5" rotation="0 -30 0"> </a-entity>
     <a-entity gltf-model="#rpo-server" position="4 1 -5"> </a-entity>
   </a-entity>
@@ -800,6 +817,9 @@
               await typeText(firstText, firstText.getAttribute('value'));
               nextButton.setAttribute('visible', 'true');
               nextButton.querySelector('a-plane').classList.add('clickable');
+              // Показываем и запускаем видео
+              video.setAttribute('visible', 'true');
+              videoElement.play();
             }
           });
         });
