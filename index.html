@@ -99,7 +99,7 @@
          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
 
         <!-- Видосики -->
-        <video id="videoBunny" preload="auto" src="objects/rpo/gifs/code.mp4" width="160" height="90" autoplay="" loop="true" crossorigin="anonymous" muted="" playsinline="" webkit-playsinline=""></video>
+        <video id="rpo-code" preload="auto" src="objects/rpo/videos/code.mp4" autoplay="" loop="true" crossorigin="anonymous" muted="" playsinline="" webkit-playsinline=""></video>
 
 
         <!-- Звуки -->
@@ -140,17 +140,7 @@
       <a-entity id="background" environment="preset: starry;"></a-entity>
 
       <!-- Основная сцена -->
-
-      <a-video 
-        src="objects/rpo/gifs/code.mp4" 
-        position="0 1.5 -2" 
-        width="2" 
-        height="2" 
-        autoplay 
-        loop>
-      </a-video>
-
-      <a-entity material="shader: flat; src: #videoBunny" geometry="primitive: plane; width: 160; height: 90;" position="0 60 -250" rotation="0 35 0">
+      <a-entity material="shader: flat; src: #rpo-code" geometry="primitive: plane; width: 160; height: 90;" position="0 60 -250" rotation="0 35 0">
       </a-entity>
 
       <a-entity id="main-scene">
