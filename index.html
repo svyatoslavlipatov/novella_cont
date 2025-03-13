@@ -89,6 +89,24 @@
           });
         }
       });
+
+      AFRAME.registerComponent('play-on-click', {
+        init: function () {
+          this.onClick = this.onClick.bind(this);
+        },
+        play: function () {
+          window.addEventListener('click', this.onClick);
+        },
+        pause: function () {
+          window.removeEventListener('click', this.onClick);
+        },
+        onClick: function (evt) {
+          var videoEl = this.el.getAttribute('material').src;
+          if (!videoEl) { return; }
+          this.el.object3D.visible = true;
+          videoEl.play();
+        }
+      });
     
     </script>
 
@@ -101,7 +119,7 @@
          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
 
         <!-- Видосики -->
-        <video id="code" preload="auto" src="objects/rpo/videos/code.mp4" autoplay loop="true" muted webkit-playsinline playsinline></video>
+        <video id="code" preload="auto" src="objects/rpo/videos/code.mp4" autoplay loop="true" muted webkit-playsinline playsinline  play-on-click=""></video>
 
         <!-- Звуки -->
         <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
