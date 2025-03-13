@@ -99,7 +99,7 @@
          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
 
         <!-- Видосики -->
-
+        <video id="code" autoplay loop="true" src="objects/rpo/videos/code.mp4"></video>
 
         <!-- Звуки -->
         <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
@@ -155,6 +155,10 @@
 
       <!-- Транзитная сцена -->
       <a-entity id="transition-scene" visible="false">
+
+        <!-- Using the asset management system. -->
+        <a-video src="#code" width="16" height="9" position="0 0 2"></a-video>
+
            <!-- Пол для персонажа -->
    <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#2e2e2e" emissive="#121212" id="scene-plane"></a-plane>
         <!-- Цвет неба -->
