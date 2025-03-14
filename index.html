@@ -1,1266 +1,1441 @@
-<html>
-  <head>
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
-    <script>
-      // Шрифт для текста
-      AFRAME.registerComponent('custom-font', {
-        init: function () {
-          this.el.setAttribute('font', 'msdf/pixel/pix-msdf.json');
-          this.el.setAttribute('font-image', 'msdf/pixel/pix.png');
-          this.el.setAttribute('negate', 'false');
-        }
-      });
+  <html>
+    <head>
+      <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+      <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
+      <script>
+        // Шрифт для текста
+        AFRAME.registerComponent('custom-font', {
+          init: function () {
+            this.el.setAttribute('font', 'msdf/pixel/pix-msdf.json');
+            this.el.setAttribute('font-image', 'msdf/pixel/pix.png');
+            this.el.setAttribute('negate', 'false');
+          }
+        });
 
-      // Компонент кнопки
-      AFRAME.registerComponent('button', {
-        schema: {
-          value: { type: 'string', default: '' },
-          position: { type: 'vec3', default: { x: 0, y: 1, z: 0 } }
-        },
-        init: function () {
-          const el = this.el;
-          const data = this.data;
+        // Компонент кнопки
+        AFRAME.registerComponent('button', {
+          schema: {
+            value: { type: 'string', default: '' },
+            position: { type: 'vec3', default: { x: 0, y: 1, z: 0 } }
+          },
+          init: function () {
+            const el = this.el;
+            const data = this.data;
 
-          // Создаём плоскость
-          const plane = document.createElement('a-plane');
-          plane.setAttribute('width', '3');
-          plane.setAttribute('height', '0.3');
-          plane.setAttribute('color', '#00CC00');
-          plane.setAttribute('hoverable', '');
+            // Создаём плоскость
+            const plane = document.createElement('a-plane');
+            plane.setAttribute('width', '3');
+            plane.setAttribute('height', '0.3');
+            plane.setAttribute('color', '#00CC00');
+            plane.setAttribute('hoverable', '');
 
-          // Создаём текст
-          const text = document.createElement('a-text');
-          text.setAttribute('value', data.value);
-          text.setAttribute('custom-font', ''); // Используем компонент custom-font
-          text.setAttribute('align', 'center');
-          text.setAttribute('color', 'white');
-          text.setAttribute('position', '0 0 0.01');
-          text.setAttribute('width', '3');
-          text.setAttribute('scale', '0.8 0.8 0.8');
+            // Создаём текст
+            const text = document.createElement('a-text');
+            text.setAttribute('value', data.value);
+            text.setAttribute('custom-font', ''); // Используем компонент custom-font
+            text.setAttribute('align', 'center');
+            text.setAttribute('color', 'white');
+            text.setAttribute('position', '0 0 0.01');
+            text.setAttribute('width', '3');
+            text.setAttribute('scale', '0.8 0.8 0.8');
 
-          // Добавляем элементы в сущность
-          el.appendChild(plane);
-          el.appendChild(text);
-          el.setAttribute('position', data.position);
-        }
-      });
+            // Добавляем элементы в сущность
+            el.appendChild(plane);
+            el.appendChild(text);
+            el.setAttribute('position', data.position);
+          }
+        });
 
-      // Компонент текста
-      AFRAME.registerComponent('dialog-text', {
-        schema: {
-          value: { type: 'string', default: '' },
-          position: { type: 'vec3', default: { x: 0, y: 0, z: 0 } }
-        },
-        init: function () {
-          const el = this.el;
-          const data = this.data;
+        // Компонент текста
+        AFRAME.registerComponent('dialog-text', {
+          schema: {
+            value: { type: 'string', default: '' },
+            position: { type: 'vec3', default: { x: 0, y: 0, z: 0 } }
+          },
+          init: function () {
+            const el = this.el;
+            const data = this.data;
 
-          // Добавляем шрифт через компонент 
-          el.setAttribute('custom-font', '');
+            // Добавляем шрифт через компонент 
+            el.setAttribute('custom-font', '');
 
-          // Остальные общие атрибуты
-          el.setAttribute('color', '#FFFFFF');
-          el.setAttribute('align', 'left');
-          el.setAttribute('anchor', 'left');
-          el.setAttribute('baseline', 'top');
-          el.setAttribute('width', '3.5');
-          el.setAttribute('scale', '1 1 1');
-          el.setAttribute('wrapcount', '50');
-          el.setAttribute('alpha-test','5')
+            // Остальные общие атрибуты
+            el.setAttribute('color', '#FFFFFF');
+            el.setAttribute('align', 'left');
+            el.setAttribute('anchor', 'left');
+            el.setAttribute('baseline', 'top');
+            el.setAttribute('width', '3.5');
+            el.setAttribute('scale', '1 1 1');
+            el.setAttribute('wrapcount', '50');
+            el.setAttribute('alpha-test','5')
 
-          // Уникальные атрибуты
-          el.setAttribute('value', data.value);
-          el.setAttribute('position', data.position);
-        }
-      });
+            // Уникальные атрибуты
+            el.setAttribute('value', data.value);
+            el.setAttribute('position', data.position);
+          }
+        });
 
-      // Компонент для эффекта наведения
-      AFRAME.registerComponent('hoverable', {
-        init: function () {
-          var el = this.el;
-          el.addEventListener('mouseenter', function () {
-            el.setAttribute('color', '#005F7F');
-          });
-          el.addEventListener('mouseleave', function () {
-            el.setAttribute('color', '#008CBA');
-          });
-        }
-      });
+        // Компонент для эффекта наведения
+        AFRAME.registerComponent('hoverable', {
+          init: function () {
+            var el = this.el;
+            el.addEventListener('mouseenter', function () {
+              el.setAttribute('color', '#005F7F');
+            });
+            el.addEventListener('mouseleave', function () {
+              el.setAttribute('color', '#008CBA');
+            });
+          }
+        });
 
-      AFRAME.registerComponent('play-video-on-click', {
-        init: function () {
-          var el = this.el; // Ссылка на сущность (portal1)
-          var video = document.querySelector('#rpo-video-code'); // Ссылка на видео элемент
-          
-          // Добавляем обработчик события клика
-          el.addEventListener('click', function () {
-            // Проверяем, существует ли видео элемент
-            if (video) {
-              // Запускаем воспроизведение видео
-              video.components.material.data.src.play();
-            }
-          });
-        }
-      });
+        AFRAME.registerComponent('play-video-on-click', {
+          init: function () {
+            var el = this.el; // Ссылка на сущность (portal1)
+            var video = document.querySelector('#rpo-video-code'); // Ссылка на видео элемент
+            
+            // Добавляем обработчик события клика
+            el.addEventListener('click', function () {
+              // Проверяем, существует ли видео элемент
+              if (video) {
+                // Запускаем воспроизведение видео
+                video.components.material.data.src.play();
+              }
+            });
+          }
+        });
+      
+      </script>
+
+    </head>
+    <body>
+      <a-scene>      
+        <!-- Ассеты -->
+        <a-assets>
+          <!-- 3д модели -->
+          <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
+          <a-asset-item id="rpo-server-2" src="models/rpo/server2/server-neuro.glb"></a-asset-item>
     
-    </script>
 
-  </head>
-  <body>
-    <a-scene>      
-      <!-- Ассеты -->
-      <a-assets>
-        <!-- 3д модели -->
-         <a-asset-item id="rpo-server" src="models/rpo/server/server.glb"></a-asset-item>
-         <a-asset-item id="rpo-server-2" src="models/rpo/server2/server-neuro.glb"></a-asset-item>
-  
-
-        <!-- Звуки -->
-        <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
-        <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="true" volume="0.5"></a-sound> 
-        <audio id="click-sound" src="sounds/blip/blick_click.wav"></audio>
-        <audio id="blip2" src="sounds/blip/blip_enter.wav"></audio>
+          <!-- Звуки -->
+          <a-sound id="transition-first-music" src="music/nakal.mp3" autoplay="false" loop="false" volume="0.5"></a-sound>
+          <a-sound id="transition-second-music" src="music/funny.mp3" autoplay="false" loop="true" volume="0.5"></a-sound> 
+          <audio id="click-sound" src="sounds/blip/blick_click.wav"></audio>
+          <audio id="blip2" src="sounds/blip/blip_enter.wav"></audio>
 
 
-        <video id="code" autoplay loop="true" muted src="objects/rpo/videos/code.mp4"></video>
+          <video id="code" autoplay loop="true" muted src="objects/rpo/videos/code.mp4"></video>
 
-      </a-assets>
+        </a-assets>
 
-      <!-- Камера с raycaster для управления мышью -->
-      <a-camera 
-        position="0 1 0" 
-        wasd-controls="enabled: false" 
-        look-controls="enabled: true" 
-        raycaster="objects: .clickable; far: 10; lineColor: white; lineOpacity: 0.5" 
-        cursor="rayOrigin: mouse"
-        sound="src: #click-sound; on: click">
-      </a-camera>
+        <!-- Камера с raycaster для управления мышью -->
+        <a-camera 
+          position="0 1 0" 
+          wasd-controls="enabled: false" 
+          look-controls="enabled: true" 
+          raycaster="objects: .clickable; far: 10; lineColor: white; lineOpacity: 0.5" 
+          cursor="rayOrigin: mouse"
+          sound="src: #click-sound; on: click">
+        </a-camera>
 
-      <!-- Контроллеры Pico 4 -->
-      <a-entity 
-        id="left-controller" 
-        laser-controls="hand: left" 
-        position="0 1 0" 
-        raycaster="objects: .clickable; far: 10; lineColor: white; lineOpacity: 0.5"
-        sound="src: #click-sound; on: click">
-      </a-entity>
-
-      <a-entity 
-        id="right-controller" 
-        laser-controls="hand: right" 
-        position="0 1 0" 
-        raycaster="objects: .clickable; far: 10; lineColor: white; lineOpacity: 0.5"
-        sound="src: #click-sound; on: click">
-      </a-entity>
-
-      <!-- Динамичный фон с environment -->
-      <a-entity id="background" environment="preset: starry;"></a-entity>
-
-      <!-- Основная сцена -->
-      <a-entity id="main-scene">
-        <!-- Кнопка "Next" -->
-        <a-entity position="0 1 -2">
-          <a-plane 
-            id="button-next" 
-            class="clickable" 
-            width="1" height="0.4" 
-            color="#008CBA"
-            hoverable>
-          </a-plane>
-          <a-text custom-font value="Вперед!!" align="center" color="white" position="0 0 0.01"></a-text>
+        <!-- Контроллеры Pico 4 -->
+        <a-entity 
+          id="left-controller" 
+          laser-controls="hand: left" 
+          position="0 1 0" 
+          raycaster="objects: .clickable; far: 10; lineColor: white; lineOpacity: 0.5"
+          sound="src: #click-sound; on: click">
         </a-entity>
-      </a-entity>
 
-      <!-- Транзитная сцена -->
-      <a-entity id="transition-scene" visible="false">
-           <!-- Пол для персонажа -->
-   <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#2e2e2e" emissive="#121212" id="scene-plane"></a-plane>
-        <!-- Цвет неба -->
-        <a-sky color="#020b0f"></a-sky> 
-        <a-entity position="0 1 -4">
-          <a-text id="msg-one" value="Привет!" custom-font  align="center" color="white" scale="2 2 2" opacity="1"></a-text>
-          <a-text id="msg-two" value="Ты стоишь на перепутье, кем же тебе стать.." custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-          <a-text id="msg-three" value="Выбрать направление очень важно, и мы тебе поможем в этом" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-          <a-text id="msg-four" value="Мы покажем тебе 5 направлений нашего факультета" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-          <a-text id="msg-five" value="И покажем суть каждого!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-          <a-text id="msg-six" value="Выбирай!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
-        </a-entity> 
-        
-        <a-entity id="portals">
-          <!-- Первый портал (РПО) -->
-          <a-entity id="portal1">
-            <a-circle 
-              position="-2 1 -0.5" 
-              rotation="0 90 0"
-              radius="0.450"
-              color="#00FFFF" 
-              opacity="0" 
-              play-video-on-click>
-            </a-circle>
-            <a-text id="txt-portal-one" value="Прикладная информатика \n (Разработка ПО)" custom-font position="-2 1.7 -0.5"  scale="0.5 1 1"  rotation="0 90 0" align="center" color="white"opacity="0"></a-text>
-           </a-entity>
+        <a-entity 
+          id="right-controller" 
+          laser-controls="hand: right" 
+          position="0 1 0" 
+          raycaster="objects: .clickable; far: 10; lineColor: white; lineOpacity: 0.5"
+          sound="src: #click-sound; on: click">
+        </a-entity>
 
-          <!-- Второй портал -->
-          <a-entity id="portal2">
-            <a-circle 
-              position="-1 1 -2" 
-              rotation="0 0 0"
-              radius="0.450"
-              color="#FF00FF" 
-              opacity="0" >
-            </a-circle>
-            <a-text id="txt-portal-two" value="Прикладная информатика \n (ПИ в дизайне)" custom-font position="-1 1.7 -2" rotation="0 0 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
+        <!-- Динамичный фон с environment -->
+        <a-entity id="background" environment="preset: starry;"></a-entity>
+
+        <!-- Основная сцена -->
+        <a-entity id="main-scene">
+          <!-- Кнопка "Next" -->
+          <a-entity position="0 1 -2">
+            <a-plane 
+              id="button-next" 
+              class="clickable" 
+              width="1" height="0.4" 
+              color="#008CBA"
+              hoverable>
+            </a-plane>
+            <a-text custom-font value="Вперед!!" align="center" color="white" position="0 0 0.01"></a-text>
+          </a-entity>
+        </a-entity>
+
+        <!-- Транзитная сцена -->
+        <a-entity id="transition-scene" visible="false">
+            <!-- Пол для персонажа -->
+    <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#2e2e2e" emissive="#121212" id="scene-plane"></a-plane>
+          <!-- Цвет неба -->
+          <a-sky color="#020b0f"></a-sky> 
+          <a-entity position="0 1 -4">
+            <a-text id="msg-one" value="Привет!" custom-font  align="center" color="white" scale="2 2 2" opacity="1"></a-text>
+            <a-text id="msg-two" value="Ты стоишь на перепутье, кем же тебе стать.." custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+            <a-text id="msg-three" value="Выбрать направление очень важно, и мы тебе поможем в этом" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+            <a-text id="msg-four" value="Мы покажем тебе 5 направлений нашего факультета" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+            <a-text id="msg-five" value="И покажем суть каждого!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+            <a-text id="msg-six" value="Выбирай!" custom-font align="center" color="white" scale="2 2 2" opacity="0" visible="true"></a-text>
+          </a-entity> 
+          
+          <a-entity id="portals">
+            <!-- Первый портал (РПО) -->
+            <a-entity id="portal1">
+              <a-circle 
+                position="-2 1 -0.5" 
+                rotation="0 90 0"
+                radius="0.450"
+                color="#00FFFF" 
+                opacity="0" 
+                play-video-on-click>
+              </a-circle>
+              <a-text id="txt-portal-one" value="Прикладная информатика \n (Разработка ПО)" custom-font position="-2 1.7 -0.5"  scale="0.5 1 1"  rotation="0 90 0" align="center" color="white"opacity="0"></a-text>
+            </a-entity>
+
+            <!-- Второй портал -->
+            <a-entity id="portal2">
+              <a-circle 
+                position="-1 1 -2" 
+                rotation="0 0 0"
+                radius="0.450"
+                color="#FF00FF" 
+                opacity="0" >
+              </a-circle>
+              <a-text id="txt-portal-two" value="Прикладная информатика \n (ПИ в дизайне)" custom-font position="-1 1.7 -2" rotation="0 0 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
+            </a-entity>
+
+            <!-- Третий портал -->
+            <a-entity id="portal3">
+              <a-circle 
+                position="1 1 -2" 
+                rotation="0 0 0"
+                radius="0.450"
+                color="#FF00FF" 
+                opacity="0" 
+                >
+              </a-circle>
+              <a-text id="txt-portal-three" value="Туризм \n (Управление деятельностью объектов туристской инфраструктуры)" custom-font position="1 1.7 -2"  rotation="0 0 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
+            </a-entity>
+
+            <!-- Четвертый портал -->
+            <a-entity id="portal4">
+              <a-circle 
+                position="1.5 1 -0.5" 
+                rotation="0 -90 0"
+                radius="0.450"
+                color="#FF00FF" 
+                opacity="0" >
+              </a-circle>
+              <a-text id="txt-portal-four" value="Сервис \n (Организационно-управленческая деятельность в сфере персональных услуг и гостинично-ресторанного сервиса)" custom-font position="1.5 1.7 -0.5"  rotation="0 -90 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
+            </a-entity>
+
+            <!-- Пятый портал -->
+            <a-entity id="portal5">
+              <a-circle 
+                position="0 1 1" 
+                rotation="0 -180 0"
+                radius="0.450"
+                color="#FF00FF" 
+                opacity="0" >
+              </a-circle>
+              <a-text id="txt-portal-five" value="Реклама и связи \n с общественностью" custom-font position="0 1.7 1" rotation="0 -180 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
+            </a-entity>
+          
+            <!-- Подсветка снизу (общая для всех порталов) -->
+            <a-light 
+              id="portal-light" 
+              type="spot" 
+              penumbra="0.1"
+              color="#FFFFFF" 
+              intensity="0"
+              position="0 6 0" 
+              rotation="-90 0 0"
+              angle="45" 
+          >
+            </a-light>
           </a-entity>
 
-          <!-- Третий портал -->
-          <a-entity id="portal3">
-            <a-circle 
-              position="1 1 -2" 
-              rotation="0 0 0"
-              radius="0.450"
-              color="#FF00FF" 
-              opacity="0" 
+          <!-- Кнопка "Back" -->
+          <a-entity id="button-back" position="2 1 0" rotation="0 -90 0">
+            <a-plane 
+              width="1" height="0.4" 
+              color="#008CBA"
+              hoverable
+              class="clickable"
               >
-            </a-circle>
-            <a-text id="txt-portal-three" value="Туризм \n (Управление деятельностью объектов туристской инфраструктуры)" custom-font position="1 1.7 -2"  rotation="0 0 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
+            </a-plane>
+            <a-text value="Назад" custom-font align="center" color="white" position="0 0 0.01"></a-text>
           </a-entity>
-
-          <!-- Четвертый портал -->
-          <a-entity id="portal4">
-            <a-circle 
-              position="1.5 1 -0.5" 
-              rotation="0 -90 0"
-              radius="0.450"
-              color="#FF00FF" 
-              opacity="0" >
-            </a-circle>
-            <a-text id="txt-portal-four" value="Сервис \n (Организационно-управленческая деятельность в сфере персональных услуг и гостинично-ресторанного сервиса)" custom-font position="1.5 1.7 -0.5"  rotation="0 -90 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
-          </a-entity>
-
-          <!-- Пятый портал -->
-          <a-entity id="portal5">
-            <a-circle 
-              position="0 1 1" 
-              rotation="0 -180 0"
-              radius="0.450"
-              color="#FF00FF" 
-              opacity="0" >
-            </a-circle>
-            <a-text id="txt-portal-five" value="Реклама и связи \n с общественностью" custom-font position="0 1.7 1" rotation="0 -180 0" align="center" color="white" scale="0.5 1 1" opacity="0"></a-text>
-          </a-entity>
-        
-          <!-- Подсветка снизу (общая для всех порталов) -->
-          <a-light 
-            id="portal-light" 
-            type="spot" 
-            penumbra="0.1"
-            color="#FFFFFF" 
-            intensity="0"
-            position="0 6 0" 
-            rotation="-90 0 0"
-            angle="45" 
-         >
-          </a-light>
         </a-entity>
 
-        <!-- Кнопка "Back" -->
-        <a-entity id="button-back" position="2 1 0" rotation="0 -90 0">
-          <a-plane 
-            width="1" height="0.4" 
-            color="#008CBA"
-            hoverable
-            class="clickable"
-            >
-          </a-plane>
-          <a-text value="Назад" custom-font align="center" color="white" position="0 0 0.01"></a-text>
-        </a-entity>
-      </a-entity>
+        <!-- РПО сцена -->
+  <a-entity id="rpo-scene" visible="false">
 
-      <!-- РПО сцена -->
-<a-entity id="rpo-scene" visible="false">
+    <a-light 
+    id="portal-light" 
+    type="spot" 
+    penumbra="0.1"
+    color="#FFFFFF" 
+    intensity="10"
+    position="0 6 0" 
+    rotation="-90 0 0"
+    angle="45" 
+  >
+  </a-light>
 
-  <a-light 
-  id="portal-light" 
-  type="spot" 
-  penumbra="0.1"
-  color="#FFFFFF" 
-  intensity="10"
-  position="0 6 0" 
-  rotation="-90 0 0"
-  angle="45" 
->
-</a-light>
+    <a-entity id="rpo-objects"> 
+      <a-entity gltf-model="#rpo-server" position="17.8 3 -3.6" rotation="0 -75 0" scale="2 2 2"> </a-entity>
+      <a-entity gltf-model="#rpo-server" position="8.55 1.8 10" rotation="0 -120 0" scale="2 2 2"> </a-entity>
+      <a-entity gltf-model="#rpo-server-2" position="10.55 1.8 10" rotation="0 -120 0" scale="2 2 2"> </a-entity>
 
-  <a-entity id="rpo-objects"> 
-    <a-entity gltf-model="#rpo-server" position="17.8 3 -3.6" rotation="0 -75 0" scale="2 2 2"> </a-entity>
-    <a-entity gltf-model="#rpo-server" position="8.55 1.8 10" rotation="0 -120 0" scale="2 2 2"> </a-entity>
-    <a-entity gltf-model="#rpo-server-2" position="10.55 1.8 10" rotation="0 -120 0" scale="2 2 2"> </a-entity>
+      <a-video id="rpo-video-code" src="#code" width="2.25" height="4.7" position="16.42 2.26 6.795" rotation="0 -123 0" opacity="0.15"></a-video>
+    </a-entity>
 
-    <a-video id="rpo-video-code" src="#code" width="2.25" height="4.7" position="16.42 2.26 6.795" rotation="0 -123 0" opacity="0.15"></a-video>
-  </a-entity>
-
-  <a-entity position="0 1 -4">
-    <a-text id="rpo-msg-one" value="РПО" custom-font align="center" color="white" scale="2 2 2" opacity="1"></a-text>
-  </a-entity>
-  
-  <!-- Сопроводитель -->
-  <a-entity id="accompanier-rpo" position="0 0.7 -3">
-    <a-box 
-      id="accompanier-rpo-box"
-      width="4" 
-      height="1" 
-      depth="0.01" 
-      color="#000000" 
-      opacity="0.7">
-      
-      <a-text 
-        id="speaker-name" 
-        value="СОПРОВОДИТЕЛЬ" 
-        custom-font
-        alpha-test="5"
-        color="#FFD700" 
-        align="left" 
-        width="2.5" 
-        position="-1.8 0.34 0.01" 
-        scale="1 1 1"
-        opacity="1">
-      </a-text>
-
-      <a-entity id="accompanier-rpo-dialog">
+    <a-entity position="0 1 -4">
+      <a-text id="rpo-msg-one" value="РПО" custom-font align="center" color="white" scale="2 2 2" opacity="1"></a-text>
+    </a-entity>
     
-        <a-text 
-          id="accompanier-rpo-text-one" 
-          dialog-text="value:Привет! Я — твой Сопроводитель. Добро пожаловать в мир Прикладной информатики, а точнее — разработки программного обеспечения!; position: -1.8 0.2 0.01" 
-          visible="true">
-        </a-text>
-
-        <a-text 
-          id="accompanier-rpo-text-two" 
-          dialog-text="value:Здесь создаётся то, что скрыто за яркими экранами приложений. Мы — разработчики бэкенда, невидимая сила, которая заставляет всё работать.; position: -1.8 0.2 0.01" 
-          visible="false">
-        </a-text>
-
-        <a-text 
-          id="accompanier-rpo-text-three" 
-          dialog-text="value:Взгляни вокруг: серверы, базы данных, потоки кода. Это сердце любого приложения — бэкенд. Он отвечает за обработку данных, безопасность и связь с пользователем.; position: -1.8 0.2 0.01" 
-          visible="false">
-        </a-text>
-          
-        <a-text 
-          id="accompanier-rpo-text-four" 
-          dialog-text="value:Представь: ты заходишь в приложение, а оно работает как по волшебству. Но магия — это Разработчики ПО, архитекторы цифрового мира. ; position: -1.8 0.2 0.01" 
-          visible="false">
-        </a-text>
-
-
-      <!-- Текст интерактив 1 -->       
-        <a-text 
-          id="accompanier-rpo-text-five-interactive" 
-          dialog-text="value:Хочешь узнать, как это работает на деле?; position: -1.8 0.2 0.01" 
-          visible="false">
-        </a-text>
-
-      <!-- Кнопка интерактив 1-->
-      <a-entity id="rpo-one-button-interactive" button="value: Да, расскажи!; position: 0 1.3 0" visible="false"></a-entity>
-
-      <a-text 
-        id="accompanier-rpo-text-six" 
-        dialog-text="value:Класс! Давай на примере: ты заходишь в мессенджер и отправляешь другу мем. А за кулисами происходит магия!; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <a-text 
-        id="accompanier-rpo-text-seven" 
-        dialog-text="value:Бэкенд принимает твой запрос, сохраняет сообщение в базе данных, отправляет его получателю — и всё это за доли секунды!; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <!-- Текст интерактив 2-->
-      <a-text 
-        id="accompanier-rpo-text-eight-interactive" 
-        dialog-text="value:Разработчики пишут код, который связывает всё воедино. Это как невидимые нити, что держат цифровую жизнь. Круто, да?; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <!-- Кнопка интерактив 2-->
-      <a-entity id="rpo-two-button-interactive" button="value: А как это устроено?; position: 0 1.3 0" visible="false"></a-entity>
-
-
-      <a-text 
-        id="accompanier-rpo-text-nine" 
-        dialog-text="value:Смотри: бэкенд — это серверы, базы данных и АРИ. Серверы обрабатывают миллионы запросов, базы хранят всё — от фоток до паролей.; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <a-text 
-        id="accompanier-rpo-text-ten" 
-        dialog-text="value: АРИ — это наш мостик. Через него приложение общается с сервером. В общем, разработчики строят фундамент, на котором держится весь цифровой мир!; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>      
-
-      <a-text 
-        id="accompanier-rpo-text-eleven-interactive" 
-        dialog-text="value: Я покажу тебе на примере. Слева от тебя кнопка Отправить сообщение, нажми на неё.; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <!-- Кнопка интерактив 3-->
-    <a-entity id="rpo-three-button-interactive" button="value: Отправить сообщение; position: 0 1.3 0" visible="false"></a-entity>
-
-      <a-text 
-        id="accompanier-rpo-text-twelve" 
-        dialog-text="value:Видишь? Ты нажал, а твой запрос мгновенно обработался. Это и есть задача разработчиков ПО — сделать всё быстрым и незаметным для пользователя.; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <a-text 
-        id="accompanier-rpo-text-thirteen" 
-        dialog-text="value: А теперь мини-задача: представь, что ты бэкенд-разработчик. Что нужно сделать, чтобы сервер ответил на запрос?; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-      
-
-      <!-- Кнопки выбора для accompanier-rpo-text-thirteen -->
-
-      <a-entity id="choice-a-button-fourteen" button="value: Написать код для обработки запроса; position: 0 1.65 0" visible="false"></a-entity>
-      <a-entity id="choice-b-button-fourteen" button="value: Обновить дизайн приложения; position: 0 1.3 0" visible="false"></a-entity>
-      <a-entity id="choice-c-button-fourteen" button="value: Перезапустить сервер вручную; position: 0 0.95 0" visible="false"></a-entity>
-
-
-      <!-- Варианты ответов для accompanier-rpo-text-thirteen -->
-      <a-text 
-        id="accompanier-rpo-text-fourteen-a" 
-        dialog-text="value: Верно! Это основа работы бэкенда — обработать и вернуть ответ.; position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <a-text 
-        id="accompanier-rpo-text-fourteen-b" 
-        dialog-text="value: Нет, это задача фронтенда, а не наша. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-      <a-text 
-        id="accompanier-rpo-text-fourteen-c" 
-        dialog-text="value: Не совсем — серверы работают автономно, а не так. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
-        visible="false">
-      </a-text>
-
-    <a-text 
-        id="accompanier-rpo-text-fiveteen" 
-        dialog-text="value: Вот и всё! Теперь ты знаешь, чем живёт это направление. Здесь мы строим фундамент технологий.; position: -1.8 0.2 0.01" 
-        visible="false">
-    </a-text>
-
-    <a-text 
-      id="accompanier-rpo-text-sixteen" 
-      dialog-text="value: Пока! Надеюсь, тебе было интересно.; position: -1.8 0.2 0.01" 
-      visible="false">
-    </a-text>
-
-    <a-text 
-      id="accompanier-rpo-text-seventeen" 
-      dialog-text="value: Как тебе этот мир?; position: -1.8 0.2 0.01" 
-      visible="false">
-    </a-text>
-
-      <!-- Кнопка "Да" -->
-  <a-entity id="yes-button-seventeen" button="value: Да; position: 0 1.3 0" visible="false"></a-entity>
-
-  <!-- Кнопка "Нет" -->
-  <a-entity id="no-button-seventeen" button="value: Нет; position: 0 0.95 0" visible="false"></a-entity>
-
-  <!-- Текст ответа "Ура" -->
-  <a-text 
-    id="accompanier-rpo-text-eighteen-yes" 
-    dialog-text="value: Да, круто!; position: -1.8 0.2 0.01" 
-    visible="false">
-  </a-text>
-
-  <!-- Текст ответа "Жаль" -->
-  <a-text 
-    id="accompanier-rpo-text-eighteen-no" 
-    dialog-text="value: Не моё; position: -1.8 0.2 0.01" 
-    visible="false">
-  </a-text>
-
-  <a-text 
-    id="accompanier-rpo-text-nineteen" 
-    dialog-text="value: Возвращайся к порталам, если хочешь исследовать дальше!” (Кнопка: Возврат к порталам); position: -1.8 0.2 0.01" 
-    visible="false">
-  </a-text>
-
-  <!-- Кнопка "Назад" в rpo-scene -->
-  <a-entity id="rpo-back-to-portals" position="0 0.5 0" visible="false">
-    <a-plane 
-      width="1" 
-      height="0.4" 
-      color="#008CBA" 
-      hoverable>
-    </a-plane>
-    <a-text 
-      value="Назад к порталам" 
-      custom-font
-      align="center" 
-      color="white" 
-      position="0 0 0.01" 
-      scale="0.8 0.8 0.8">
-    </a-text>
-  </a-entity>
-
-      </a-entity>
-
-     <!-- Кнопка "Далее »" -->
-      <a-entity id="next-text-button" position="1.5 -0.3 0.01" visible="false">
-        <a-plane 
-          width="0.6" 
-          height="0.3" 
-          color="#008CBA"
-          hoverable>
-        </a-plane>
-        <a-text 
-          value="Next >>" 
-          align="center" 
-          color="white" 
-          position="0 0 0.01"
-          width="1.25"
-          scale="0.8 0.8 0.8">
-        </a-text>
-      </a-entity>
-    </a-box>
-
-    <a-image 
-      id="character-portrait"
-      src="#character-image" 
-      position="-1.5 0.5 0" 
-      width="1" 
-      height="1.5" 
-      opacity="0">
-    </a-image>
-  </a-entity>
-
- 
-
-
-
-  </a-entity>
-
-</a-entity>
-
-      <!-- Дизайн сцена -->
-      <a-entity id="dizayn-scene" visible="false">
-
-        <a-entity position="0 1 -4">
-          <a-text id="dizayn-msg-one" value="DIZAYN" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
-        </a-entity>
+    <!-- Сопроводитель -->
+    <a-entity id="accompanier-rpo" position="0 0.7 -3">
+      <a-box 
+        id="accompanier-rpo-box"
+        width="4" 
+        height="1" 
+        depth="0.01" 
+        color="#000000" 
+        opacity="0.7">
         
-          <!-- Сопроводитель Дизайн -->
-        <a-entity id="accompanier-diz" position="0 0.7 -3">
-          <a-box 
-            id="accompanier-diz-box"
-            width="4" 
-            height="1" 
-            depth="0.01" 
-            color="#000000" 
-            opacity="0.7">
-            
-            <a-text 
-              id="speaker-name" 
-              value="СОПРОВОДИТЕЛЬ" 
-              custom-font
-              alpha-test="5"
-              color="#FFD700" 
-              align="left" 
-              width="2.5" 
-              position="-1.8 0.34 0.01" 
-              scale="1 1 1"
-              opacity="1">
-            </a-text>
-      
-            <a-entity id="accompanier-diz-dialog">
-          
-              <a-text 
-                id="accompanier-diz-text-one" 
-                dialog-text="value:Привет! Я — твой Сопроводитель. Добро пожаловать в мир Прикладной информатики, а точнее — разработки программного обеспечения!; position: -1.8 0.2 0.01" 
-                visible="true">
-              </a-text>
-      
-              <a-text 
-                id="accompanier-diz-text-two" 
-                dialog-text="value:Здесь создаётся то, что скрыто за яркими экранами приложений. Мы — разработчики бэкенда, невидимая сила, которая заставляет всё работать.; position: -1.8 0.2 0.01" 
-                visible="false">
-              </a-text>
-      
-              <a-text 
-                id="accompanier-diz-text-three" 
-                dialog-text="value:Взгляни вокруг: серверы, базы данных, потоки кода. Это сердце любого приложения — бэкенд. Он отвечает за обработку данных, безопасность и связь с пользователем.; position: -1.8 0.2 0.01" 
-                visible="false">
-              </a-text>
-                
-              <a-text 
-                id="accompanier-diz-text-four" 
-                dialog-text="value:Представь: ты заходишь в приложение, а оно работает как по волшебству. Но магия — это Разработчики ПО, архитекторы цифрового мира. ; position: -1.8 0.2 0.01" 
-                visible="false">
-              </a-text>
-      
-      
-            <!-- Текст интерактив 1 -->       
-              <a-text 
-                id="accompanier-diz-text-five-interactive" 
-                dialog-text="value:Хочешь узнать, как это работает на деле?; position: -1.8 0.2 0.01" 
-                visible="false">
-              </a-text>
-      
-            <!-- Кнопка интерактив 1-->
-            <a-entity id="rpo-one-button-interactive" button="value: Да, расскажи!; position: 0 1.3 0" visible="false"></a-entity>
-      
-            <a-text 
-              id="accompanier-diz-text-six" 
-              dialog-text="value:Класс! Давай на примере: ты заходишь в мессенджер и отправляешь другу мем. А за кулисами происходит магия!; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <a-text 
-              id="accompanier-diz-text-seven" 
-              dialog-text="value:Бэкенд принимает твой запрос, сохраняет сообщение в базе данных, отправляет его получателю — и всё это за доли секунды!; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <!-- Текст интерактив 2-->
-            <a-text 
-              id="accompanier-diz-text-eight-interactive" 
-              dialog-text="value:Разработчики пишут код, который связывает всё воедино. Это как невидимые нити, что держат цифровую жизнь. Круто, да?; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <!-- Кнопка интерактив 2-->
-            <a-entity id="rpo-two-button-interactive" button="value: А как это устроено?; position: 0 1.3 0" visible="false"></a-entity>
-      
-      
-            <a-text 
-              id="accompanier-diz-text-nine" 
-              dialog-text="value:Смотри: бэкенд — это серверы, базы данных и АРИ. Серверы обрабатывают миллионы запросов, базы хранят всё — от фоток до паролей.; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <a-text 
-              id="accompanier-diz-text-ten" 
-              dialog-text="value: АРИ — это наш мостик. Через него приложение общается с сервером. В общем, разработчики строят фундамент, на котором держится весь цифровой мир!; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>      
-      
-            <a-text 
-              id="accompanier-diz-text-eleven-interactive" 
-              dialog-text="value: Я покажу тебе на примере. Слева от тебя кнопка Отправить сообщение, нажми на неё.; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <!-- Кнопка интерактив 3-->
-          <a-entity id="rpo-three-button-interactive" button="value: Отправить сообщение; position: 0 1.3 0" visible="false"></a-entity>
-      
-            <a-text 
-              id="accompanier-diz-text-twelve" 
-              dialog-text="value:Видишь? Ты нажал, а твой запрос мгновенно обработался. Это и есть задача разработчиков ПО — сделать всё быстрым и незаметным для пользователя.; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <a-text 
-              id="accompanier-diz-text-thirteen" 
-              dialog-text="value: А теперь мини-задача: представь, что ты бэкенд-разработчик. Что нужно сделать, чтобы сервер ответил на запрос?; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-            
-      
-            <!-- Кнопки выбора для accompanier-diz-text-thirteen -->
-      
-            <a-entity id="choice-a-button-fourteen" button="value: Написать код для обработки запроса; position: 0 1.65 0" visible="false"></a-entity>
-            <a-entity id="choice-b-button-fourteen" button="value: Обновить дизайн приложения; position: 0 1.3 0" visible="false"></a-entity>
-            <a-entity id="choice-c-button-fourteen" button="value: Перезапустить сервер вручную; position: 0 0.95 0" visible="false"></a-entity>
-      
-      
-            <!-- Варианты ответов для accompanier-diz-text-thirteen -->
-            <a-text 
-              id="accompanier-diz-text-fourteen-a" 
-              dialog-text="value: Верно! Это основа работы бэкенда — обработать и вернуть ответ.; position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <a-text 
-              id="accompanier-diz-text-fourteen-b" 
-              dialog-text="value: Нет, это задача фронтенда, а не наша. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
-      
-            <a-text 
-              id="accompanier-diz-text-fourteen-c" 
-              dialog-text="value: Не совсем — серверы работают автономно, а не так. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
-              visible="false">
-            </a-text>
+        <a-text 
+          id="speaker-name" 
+          value="СОПРОВОДИТЕЛЬ" 
+          custom-font
+          alpha-test="5"
+          color="#FFD700" 
+          align="left" 
+          width="2.5" 
+          position="-1.8 0.34 0.01" 
+          scale="1 1 1"
+          opacity="1">
+        </a-text>
+
+        <a-entity id="accompanier-rpo-dialog">
       
           <a-text 
-              id="accompanier-diz-text-fiveteen" 
-              dialog-text="value: Вот и всё! Теперь ты знаешь, чем живёт это направление. Здесь мы строим фундамент технологий.; position: -1.8 0.2 0.01" 
-              visible="false">
+            id="accompanier-rpo-text-one" 
+            dialog-text="value:Привет! Я — твой Сопроводитель. Добро пожаловать в мир Прикладной информатики, а точнее — разработки программного обеспечения!; position: -1.8 0.2 0.01" 
+            visible="true">
           </a-text>
-      
+
           <a-text 
-            id="accompanier-diz-text-sixteen" 
-            dialog-text="value: Пока! Надеюсь, тебе было интересно.; position: -1.8 0.2 0.01" 
+            id="accompanier-rpo-text-two" 
+            dialog-text="value:Здесь создаётся то, что скрыто за яркими экранами приложений. Мы — разработчики бэкенда, невидимая сила, которая заставляет всё работать.; position: -1.8 0.2 0.01" 
             visible="false">
           </a-text>
-      
+
           <a-text 
-            id="accompanier-diz-text-seventeen" 
-            dialog-text="value: Как тебе этот мир?; position: -1.8 0.2 0.01" 
+            id="accompanier-rpo-text-three" 
+            dialog-text="value:Взгляни вокруг: серверы, базы данных, потоки кода. Это сердце любого приложения — бэкенд. Он отвечает за обработку данных, безопасность и связь с пользователем.; position: -1.8 0.2 0.01" 
             visible="false">
           </a-text>
-      
-            <!-- Кнопка "Да" -->
-        <a-entity id="yes-button-seventeen" button="value: Да; position: 0 1.3 0" visible="false"></a-entity>
-      
-        <!-- Кнопка "Нет" -->
-        <a-entity id="no-button-seventeen" button="value: Нет; position: 0 0.95 0" visible="false"></a-entity>
-      
-        <!-- Текст ответа "Ура" -->
+            
+          <a-text 
+            id="accompanier-rpo-text-four" 
+            dialog-text="value:Представь: ты заходишь в приложение, а оно работает как по волшебству. Но магия — это Разработчики ПО, архитекторы цифрового мира. ; position: -1.8 0.2 0.01" 
+            visible="false">
+          </a-text>
+
+
+        <!-- Текст интерактив 1 -->       
+          <a-text 
+            id="accompanier-rpo-text-five-interactive" 
+            dialog-text="value:Хочешь узнать, как это работает на деле?; position: -1.8 0.2 0.01" 
+            visible="false">
+          </a-text>
+
+        <!-- Кнопка интерактив 1-->
+        <a-entity id="rpo-one-button-interactive" button="value: Да, расскажи!; position: 0 1.3 0" visible="false"></a-entity>
+
         <a-text 
-          id="accompanier-diz-text-eighteen-yes" 
-          dialog-text="value: Да, круто!; position: -1.8 0.2 0.01" 
+          id="accompanier-rpo-text-six" 
+          dialog-text="value:Класс! Давай на примере: ты заходишь в мессенджер и отправляешь другу мем. А за кулисами происходит магия!; position: -1.8 0.2 0.01" 
           visible="false">
         </a-text>
-      
-        <!-- Текст ответа "Жаль" -->
+
         <a-text 
-          id="accompanier-diz-text-eighteen-no" 
-          dialog-text="value: Не моё; position: -1.8 0.2 0.01" 
+          id="accompanier-rpo-text-seven" 
+          dialog-text="value:Бэкенд принимает твой запрос, сохраняет сообщение в базе данных, отправляет его получателю — и всё это за доли секунды!; position: -1.8 0.2 0.01" 
           visible="false">
         </a-text>
-      
+
+        <!-- Текст интерактив 2-->
         <a-text 
-          id="accompanier-diz-text-nineteen" 
-          dialog-text="value: Возвращайся к порталам, если хочешь исследовать дальше!” (Кнопка: Возврат к порталам); position: -1.8 0.2 0.01" 
+          id="accompanier-rpo-text-eight-interactive" 
+          dialog-text="value:Разработчики пишут код, который связывает всё воедино. Это как невидимые нити, что держат цифровую жизнь. Круто, да?; position: -1.8 0.2 0.01" 
           visible="false">
         </a-text>
-      
-        <!-- Кнопка "Назад" в rpo-scene -->
-        <a-entity id="rpo-back-to-portals" position="0 0.5 0" visible="false">
+
+        <!-- Кнопка интерактив 2-->
+        <a-entity id="rpo-two-button-interactive" button="value: А как это устроено?; position: 0 1.3 0" visible="false"></a-entity>
+
+
+        <a-text 
+          id="accompanier-rpo-text-nine" 
+          dialog-text="value:Смотри: бэкенд — это серверы, базы данных и АРИ. Серверы обрабатывают миллионы запросов, базы хранят всё — от фоток до паролей.; position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>
+
+        <a-text 
+          id="accompanier-rpo-text-ten" 
+          dialog-text="value: АРИ — это наш мостик. Через него приложение общается с сервером. В общем, разработчики строят фундамент, на котором держится весь цифровой мир!; position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>      
+
+        <a-text 
+          id="accompanier-rpo-text-eleven-interactive" 
+          dialog-text="value: Я покажу тебе на примере. Слева от тебя кнопка Отправить сообщение, нажми на неё.; position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>
+
+        <!-- Кнопка интерактив 3-->
+      <a-entity id="rpo-three-button-interactive" button="value: Отправить сообщение; position: 0 1.3 0" visible="false"></a-entity>
+
+        <a-text 
+          id="accompanier-rpo-text-twelve" 
+          dialog-text="value:Видишь? Ты нажал, а твой запрос мгновенно обработался. Это и есть задача разработчиков ПО — сделать всё быстрым и незаметным для пользователя.; position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>
+
+        <a-text 
+          id="accompanier-rpo-text-thirteen" 
+          dialog-text="value: А теперь мини-задача: представь, что ты бэкенд-разработчик. Что нужно сделать, чтобы сервер ответил на запрос?; position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>
+        
+
+        <!-- Кнопки выбора для accompanier-rpo-text-thirteen -->
+
+        <a-entity id="choice-a-button-fourteen" button="value: Написать код для обработки запроса; position: 0 1.65 0" visible="false"></a-entity>
+        <a-entity id="choice-b-button-fourteen" button="value: Обновить дизайн приложения; position: 0 1.3 0" visible="false"></a-entity>
+        <a-entity id="choice-c-button-fourteen" button="value: Перезапустить сервер вручную; position: 0 0.95 0" visible="false"></a-entity>
+
+
+        <!-- Варианты ответов для accompanier-rpo-text-thirteen -->
+        <a-text 
+          id="accompanier-rpo-text-fourteen-a" 
+          dialog-text="value: Верно! Это основа работы бэкенда — обработать и вернуть ответ.; position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>
+
+        <a-text 
+          id="accompanier-rpo-text-fourteen-b" 
+          dialog-text="value: Нет, это задача фронтенда, а не наша. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>
+
+        <a-text 
+          id="accompanier-rpo-text-fourteen-c" 
+          dialog-text="value: Не совсем — серверы работают автономно, а не так. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
+          visible="false">
+        </a-text>
+
+      <a-text 
+          id="accompanier-rpo-text-fiveteen" 
+          dialog-text="value: Вот и всё! Теперь ты знаешь, чем живёт это направление. Здесь мы строим фундамент технологий.; position: -1.8 0.2 0.01" 
+          visible="false">
+      </a-text>
+
+      <a-text 
+        id="accompanier-rpo-text-sixteen" 
+        dialog-text="value: Пока! Надеюсь, тебе было интересно.; position: -1.8 0.2 0.01" 
+        visible="false">
+      </a-text>
+
+      <a-text 
+        id="accompanier-rpo-text-seventeen" 
+        dialog-text="value: Как тебе этот мир?; position: -1.8 0.2 0.01" 
+        visible="false">
+      </a-text>
+
+        <!-- Кнопка "Да" -->
+    <a-entity id="yes-button-seventeen" button="value: Да; position: 0 1.3 0" visible="false"></a-entity>
+
+    <!-- Кнопка "Нет" -->
+    <a-entity id="no-button-seventeen" button="value: Нет; position: 0 0.95 0" visible="false"></a-entity>
+
+    <!-- Текст ответа "Ура" -->
+    <a-text 
+      id="accompanier-rpo-text-eighteen-yes" 
+      dialog-text="value: Да, круто!; position: -1.8 0.2 0.01" 
+      visible="false">
+    </a-text>
+
+    <!-- Текст ответа "Жаль" -->
+    <a-text 
+      id="accompanier-rpo-text-eighteen-no" 
+      dialog-text="value: Не моё; position: -1.8 0.2 0.01" 
+      visible="false">
+    </a-text>
+
+    <a-text 
+      id="accompanier-rpo-text-nineteen" 
+      dialog-text="value: Возвращайся к порталам, если хочешь исследовать дальше!” (Кнопка: Возврат к порталам); position: -1.8 0.2 0.01" 
+      visible="false">
+    </a-text>
+
+    <!-- Кнопка "Назад" в rpo-scene -->
+    <a-entity id="rpo-back-to-portals" position="0 0.5 0" visible="false">
+      <a-plane 
+        width="1" 
+        height="0.4" 
+        color="#008CBA" 
+        hoverable>
+      </a-plane>
+      <a-text 
+        value="Назад к порталам" 
+        custom-font
+        align="center" 
+        color="white" 
+        position="0 0 0.01" 
+        scale="0.8 0.8 0.8">
+      </a-text>
+    </a-entity>
+
+        </a-entity>
+
+      <!-- Кнопка "Далее »" -->
+        <a-entity id="next-text-button" position="1.5 -0.3 0.01" visible="false">
           <a-plane 
-            width="1" 
-            height="0.4" 
-            color="#008CBA" 
+            width="0.6" 
+            height="0.3" 
+            color="#008CBA"
             hoverable>
           </a-plane>
           <a-text 
-            value="Назад к порталам" 
-            custom-font
+            value="Next >>" 
             align="center" 
             color="white" 
-            position="0 0 0.01" 
+            position="0 0 0.01"
+            width="1.25"
             scale="0.8 0.8 0.8">
           </a-text>
         </a-entity>
-      
-            </a-entity>
-      
-           <!-- Кнопка "Далее »" -->
-            <a-entity id="next-text-button" position="1.5 -0.3 0.01" visible="false">
-              <a-plane 
-                width="0.6" 
-                height="0.3" 
-                color="#008CBA"
-                hoverable>
-              </a-plane>
+      </a-box>
+
+      <a-image 
+        id="character-portrait"
+        src="#character-image" 
+        position="-1.5 0.5 0" 
+        width="1" 
+        height="1.5" 
+        opacity="0">
+      </a-image>
+    </a-entity>
+
+  
+
+
+
+    </a-entity>
+
+  </a-entity>
+
+        <!-- Дизайн сцена -->
+        <a-entity id="dizayn-scene" visible="false">
+
+          <a-entity position="0 1 -4">
+            <a-text id="dizayn-msg-one" value="DIZAYN" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
+          </a-entity>
+          
+            <!-- Сопроводитель Дизайн -->
+          <a-entity id="accompanier-diz" position="0 0.7 -3">
+            <a-box 
+              id="accompanier-diz-box"
+              width="4" 
+              height="1" 
+              depth="0.01" 
+              color="#000000" 
+              opacity="0.7">
+              
               <a-text 
-                value="Next >>" 
-                align="center" 
-                color="white" 
-                position="0 0 0.01"
-                width="1.25"
-                scale="0.8 0.8 0.8">
+                id="speaker-name" 
+                value="СОПРОВОДИТЕЛЬ" 
+                custom-font
+                alpha-test="5"
+                color="#FFD700" 
+                align="left" 
+                width="2.5" 
+                position="-1.8 0.34 0.01" 
+                scale="1 1 1"
+                opacity="1">
               </a-text>
-            </a-entity>
-          </a-box>
-      
-          <a-image 
-            id="character-portrait"
-            src="#character-image" 
-            position="-1.5 0.5 0" 
-            width="1" 
-            height="1.5" 
-            opacity="0">
-          </a-image>
-        </a-entity>
-
-
-      </a-entity>
-
-      <!-- Туризм сцена -->
-      <a-entity id="turizm-scene" visible="false">
-        <a-entity position="0 1 -4">
-          <a-text id="turizm-msg-one" value="TURIZM" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
-        </a-entity>
-      </a-entity>
-      
-      <!-- Сервис сцена -->
-      <a-entity id="service-scene" visible="false">
-        <a-entity position="0 1 -4">
-          <a-text id="service-msg-one" value="SERVICE" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
-        </a-entity>
-      </a-entity>
-
-      <!-- Реклама сцена -->
-      <a-entity id="reklama-scene" visible="false">
-        <a-entity position="0 1 -4">
-          <a-text id="reklama-msg-one" value="REKLAMA" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
-        </a-entity>
-      </a-entity>
-
-    </a-scene>
-
-    <script>
-      // Функция для эффекта печати текста
-      function typeText(element, text, speed = 5) {
-        return new Promise(resolve => {
-          let index = 0;
-          element.setAttribute('value', ''); // Очищаем текст перед началом
-          const interval = setInterval(() => {
-            if (index < text.length) {
-              element.setAttribute('value', text.substring(0, index + 1));
-              index++;
-            } else {
-              clearInterval(interval);
-              resolve();
-            }
-          }, speed);
-        });
-      }
-    
-      // Логика переключения на транзитную сцену
-      document.querySelector('#button-next').addEventListener('click', async function () {
-        console.log('click');
-        const mainScene = document.querySelector('#main-scene');
-        const transitionScene = document.querySelector('#transition-scene');
-        const buttonNext = document.querySelector('#button-next');
-        const buttonBack = document.querySelector('#button-back');
-        const background = document.querySelector('#background');
         
-        // Аудио элементы
-        const firstMusic = document.querySelector('#transition-first-music');
-        const secondMusic = document.querySelector('#transition-second-music');
+              <a-entity id="accompanier-diz-dialog">
+            
+                <a-text 
+                  id="accompanier-diz-text-one" 
+                  dialog-text="value:Привет! Я — твой Сопроводитель. Добро пожаловать в мир Прикладной информатики, а точнее — разработки программного обеспечения!; position: -1.8 0.2 0.01" 
+                  visible="true">
+                </a-text>
+        
+                <a-text 
+                  id="accompanier-diz-text-two" 
+                  dialog-text="value:Здесь создаётся то, что скрыто за яркими экранами приложений. Мы — разработчики бэкенда, невидимая сила, которая заставляет всё работать.; position: -1.8 0.2 0.01" 
+                  visible="false">
+                </a-text>
+        
+                <a-text 
+                  id="accompanier-diz-text-three" 
+                  dialog-text="value:Взгляни вокруг: серверы, базы данных, потоки кода. Это сердце любого приложения — бэкенд. Он отвечает за обработку данных, безопасность и связь с пользователем.; position: -1.8 0.2 0.01" 
+                  visible="false">
+                </a-text>
+                  
+                <a-text 
+                  id="accompanier-diz-text-four" 
+                  dialog-text="value:Представь: ты заходишь в приложение, а оно работает как по волшебству. Но магия — это Разработчики ПО, архитекторы цифрового мира. ; position: -1.8 0.2 0.01" 
+                  visible="false">
+                </a-text>
+        
+        
+              <!-- Текст интерактив 1 -->       
+                <a-text 
+                  id="accompanier-diz-text-five-interactive" 
+                  dialog-text="value:Хочешь узнать, как это работает на деле?; position: -1.8 0.2 0.01" 
+                  visible="false">
+                </a-text>
+        
+              <!-- Кнопка интерактив 1-->
+              <a-entity id="rpo-one-button-interactive" button="value: Да, расскажи!; position: 0 1.3 0" visible="false"></a-entity>
+        
+              <a-text 
+                id="accompanier-diz-text-six" 
+                dialog-text="value:Класс! Давай на примере: ты заходишь в мессенджер и отправляешь другу мем. А за кулисами происходит магия!; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <a-text 
+                id="accompanier-diz-text-seven" 
+                dialog-text="value:Бэкенд принимает твой запрос, сохраняет сообщение в базе данных, отправляет его получателю — и всё это за доли секунды!; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <!-- Текст интерактив 2-->
+              <a-text 
+                id="accompanier-diz-text-eight-interactive" 
+                dialog-text="value:Разработчики пишут код, который связывает всё воедино. Это как невидимые нити, что держат цифровую жизнь. Круто, да?; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <!-- Кнопка интерактив 2-->
+              <a-entity id="rpo-two-button-interactive" button="value: А как это устроено?; position: 0 1.3 0" visible="false"></a-entity>
+        
+        
+              <a-text 
+                id="accompanier-diz-text-nine" 
+                dialog-text="value:Смотри: бэкенд — это серверы, базы данных и АРИ. Серверы обрабатывают миллионы запросов, базы хранят всё — от фоток до паролей.; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <a-text 
+                id="accompanier-diz-text-ten" 
+                dialog-text="value: АРИ — это наш мостик. Через него приложение общается с сервером. В общем, разработчики строят фундамент, на котором держится весь цифровой мир!; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>      
+        
+              <a-text 
+                id="accompanier-diz-text-eleven-interactive" 
+                dialog-text="value: Я покажу тебе на примере. Слева от тебя кнопка Отправить сообщение, нажми на неё.; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <!-- Кнопка интерактив 3-->
+            <a-entity id="rpo-three-button-interactive" button="value: Отправить сообщение; position: 0 1.3 0" visible="false"></a-entity>
+        
+              <a-text 
+                id="accompanier-diz-text-twelve" 
+                dialog-text="value:Видишь? Ты нажал, а твой запрос мгновенно обработался. Это и есть задача разработчиков ПО — сделать всё быстрым и незаметным для пользователя.; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <a-text 
+                id="accompanier-diz-text-thirteen" 
+                dialog-text="value: А теперь мини-задача: представь, что ты бэкенд-разработчик. Что нужно сделать, чтобы сервер ответил на запрос?; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+              
+        
+              <!-- Кнопки выбора для accompanier-diz-text-thirteen -->
+        
+              <a-entity id="choice-a-button-fourteen" button="value: Написать код для обработки запроса; position: 0 1.65 0" visible="false"></a-entity>
+              <a-entity id="choice-b-button-fourteen" button="value: Обновить дизайн приложения; position: 0 1.3 0" visible="false"></a-entity>
+              <a-entity id="choice-c-button-fourteen" button="value: Перезапустить сервер вручную; position: 0 0.95 0" visible="false"></a-entity>
+        
+        
+              <!-- Варианты ответов для accompanier-diz-text-thirteen -->
+              <a-text 
+                id="accompanier-diz-text-fourteen-a" 
+                dialog-text="value: Верно! Это основа работы бэкенда — обработать и вернуть ответ.; position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <a-text 
+                id="accompanier-diz-text-fourteen-b" 
+                dialog-text="value: Нет, это задача фронтенда, а не наша. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+              <a-text 
+                id="accompanier-diz-text-fourteen-c" 
+                dialog-text="value: Не совсем — серверы работают автономно, а не так. (Правильный ответ: Написать код для обработки запроса); position: -1.8 0.2 0.01" 
+                visible="false">
+              </a-text>
+        
+            <a-text 
+                id="accompanier-diz-text-fiveteen" 
+                dialog-text="value: Вот и всё! Теперь ты знаешь, чем живёт это направление. Здесь мы строим фундамент технологий.; position: -1.8 0.2 0.01" 
+                visible="false">
+            </a-text>
+        
+            <a-text 
+              id="accompanier-diz-text-sixteen" 
+              dialog-text="value: Пока! Надеюсь, тебе было интересно.; position: -1.8 0.2 0.01" 
+              visible="false">
+            </a-text>
+        
+            <a-text 
+              id="accompanier-diz-text-seventeen" 
+              dialog-text="value: Как тебе этот мир?; position: -1.8 0.2 0.01" 
+              visible="false">
+            </a-text>
+        
+              <!-- Кнопка "Да" -->
+          <a-entity id="yes-button-seventeen" button="value: Да; position: 0 1.3 0" visible="false"></a-entity>
+        
+          <!-- Кнопка "Нет" -->
+          <a-entity id="no-button-seventeen" button="value: Нет; position: 0 0.95 0" visible="false"></a-entity>
+        
+          <!-- Текст ответа "Ура" -->
+          <a-text 
+            id="accompanier-diz-text-eighteen-yes" 
+            dialog-text="value: Да, круто!; position: -1.8 0.2 0.01" 
+            visible="false">
+          </a-text>
+        
+          <!-- Текст ответа "Жаль" -->
+          <a-text 
+            id="accompanier-diz-text-eighteen-no" 
+            dialog-text="value: Не моё; position: -1.8 0.2 0.01" 
+            visible="false">
+          </a-text>
+        
+          <a-text 
+            id="accompanier-diz-text-nineteen" 
+            dialog-text="value: Возвращайся к порталам, если хочешь исследовать дальше!” (Кнопка: Возврат к порталам); position: -1.8 0.2 0.01" 
+            visible="false">
+          </a-text>
+        
+          <!-- Кнопка "Назад" в rpo-scene -->
+          <a-entity id="rpo-back-to-portals" position="0 0.5 0" visible="false">
+            <a-plane 
+              width="1" 
+              height="0.4" 
+              color="#008CBA" 
+              hoverable>
+            </a-plane>
+            <a-text 
+              value="Назад к порталам" 
+              custom-font
+              align="center" 
+              color="white" 
+              position="0 0 0.01" 
+              scale="0.8 0.8 0.8">
+            </a-text>
+          </a-entity>
+        
+              </a-entity>
+        
+            <!-- Кнопка "Далее »" -->
+              <a-entity id="next-text-button" position="1.5 -0.3 0.01" visible="false">
+                <a-plane 
+                  width="0.6" 
+                  height="0.3" 
+                  color="#008CBA"
+                  hoverable>
+                </a-plane>
+                <a-text 
+                  value="Next >>" 
+                  align="center" 
+                  color="white" 
+                  position="0 0 0.01"
+                  width="1.25"
+                  scale="0.8 0.8 0.8">
+                </a-text>
+              </a-entity>
+            </a-box>
+        
+            <a-image 
+              id="character-portrait"
+              src="#character-image" 
+              position="-1.5 0.5 0" 
+              width="1" 
+              height="1.5" 
+              opacity="0">
+            </a-image>
+          </a-entity>
 
-        // Переключаем сцены
-        mainScene.setAttribute('visible', 'false');
-        transitionScene.setAttribute('visible', 'true');
-        buttonNext.classList.remove('clickable');
-        buttonBack.classList.add('clickable');
-        background.setAttribute('environment', 'preset: none');
 
-        // Запускаем первую музыку
-        firstMusic.components.sound.playSound();
+        </a-entity>
 
-        const messages = [
-          { id: '#msg-one', delay: 10 },
-          { id: '#msg-two', delay: 10 },
-          { id: '#msg-three', delay: 10 },
-          { id: '#msg-four', delay: 10 },
-          { id: '#msg-five', delay: 10 },
-          { id: '#msg-six', delay: 0 }
-        ];
+        <!-- Туризм сцена -->
+        <a-entity id="turizm-scene" visible="false">
+          <a-entity position="0 1 -4">
+            <a-text id="turizm-msg-one" value="TURIZM" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
+          </a-entity>
+        </a-entity>
+        
+        <!-- Сервис сцена -->
+        <a-entity id="service-scene" visible="false">
+          <a-entity position="0 1 -4">
+            <a-text id="service-msg-one" value="SERVICE" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
+          </a-entity>
+        </a-entity>
 
-        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-        const animationDuration = 10;
-        const pauseBeforeFadeIn = 10;
+        <!-- Реклама сцена -->
+        <a-entity id="reklama-scene" visible="false">
+          <a-entity position="0 1 -4">
+            <a-text id="reklama-msg-one" value="REKLAMA" align="center" color="white" scale="2 2 2" opacity="1"></a-text>
+          </a-entity>
+        </a-entity>
 
-        const animateOpacity = (element, from, to, duration) => {
+      </a-scene>
+
+      <script>
+        // Функция для эффекта печати текста
+        function typeText(element, text, speed = 5) {
           return new Promise(resolve => {
-            element.setAttribute('animation', {
-              property: 'opacity',
-              from: from,
-              to: to,
-              dur: duration,
-              easing: 'easeInOutQuad'
-            });
-            element.addEventListener('animationcomplete', function handler() {
-              if (to === 0) {
-                element.classList.remove('clickable');
-              } else if (to > 0) {
-                element.classList.add('clickable');
-              }
-              element.removeEventListener('animationcomplete', handler);
-              resolve();
-            }, { once: true });
-          });
-        };
-
-        // Функция для плавного затухания звука
-        const fadeOutSound = (sound, duration) => {
-          return new Promise(resolve => {
-            const initialVolume = sound.getAttribute('volume') || 0.5;
-            let currentVolume = initialVolume;
-            const step = initialVolume / (duration / 100); // Шаг уменьшения громкости
-
-            const fadeInterval = setInterval(() => {
-              currentVolume -= step;
-              if (currentVolume <= 0) {
-                currentVolume = 0;
-                sound.components.sound.stopSound();
-                clearInterval(fadeInterval);
+            let index = 0;
+            element.setAttribute('value', ''); // Очищаем текст перед началом
+            const interval = setInterval(() => {
+              if (index < text.length) {
+                element.setAttribute('value', text.substring(0, index + 1));
+                index++;
+              } else {
+                clearInterval(interval);
                 resolve();
               }
-              sound.setAttribute('volume', currentVolume);
-            }, 100);
+            }, speed);
           });
-        };
+        }
+      
+        // Логика переключения на транзитную сцену
+        document.querySelector('#button-next').addEventListener('click', async function () {
+          console.log('click');
+          const mainScene = document.querySelector('#main-scene');
+          const transitionScene = document.querySelector('#transition-scene');
+          const buttonNext = document.querySelector('#button-next');
+          const buttonBack = document.querySelector('#button-back');
+          const background = document.querySelector('#background');
+          
+          // Аудио элементы
+          const firstMusic = document.querySelector('#transition-first-music');
+          const secondMusic = document.querySelector('#transition-second-music');
 
-        for (let i = 0; i < messages.length - 1; i++) {
-          const current = document.querySelector(messages[i].id);
-          const next = document.querySelector(messages[i + 1].id);
+          // Переключаем сцены
+          mainScene.setAttribute('visible', 'false');
+          transitionScene.setAttribute('visible', 'true');
+          buttonNext.classList.remove('clickable');
+          buttonBack.classList.add('clickable');
+          background.setAttribute('environment', 'preset: none');
 
-          await sleep(messages[i].delay - animationDuration);
-          await animateOpacity(current, 1, 0, animationDuration);
-          current.parentNode.removeChild(current);
-          await sleep(pauseBeforeFadeIn);
-          await animateOpacity(next, 0, 1, animationDuration);
+          // Запускаем первую музыку
+          firstMusic.components.sound.playSound();
 
-          if (next.id === 'msg-three') {
-            // Плавное затухание первой музыки (например, за 2 секунды)
-            await fadeOutSound(firstMusic, 400);
-            
-            // Запуск второй музыки
-            secondMusic.components.sound.playSound();
-          }
+          const messages = [
+            { id: '#msg-one', delay: 10 },
+            { id: '#msg-two', delay: 10 },
+            { id: '#msg-three', delay: 10 },
+            { id: '#msg-four', delay: 10 },
+            { id: '#msg-five', delay: 10 },
+            { id: '#msg-six', delay: 0 }
+          ];
 
-       // Когда появляется msg-six, плавно показываем порталы
-    if (next.id === 'msg-six') {
-      const portalsContainer = document.querySelector('#portals');
-      const portals = portalsContainer.querySelectorAll('a-circle');
-      const portalTexts = portalsContainer.querySelectorAll('a-text');
-      const portalLight = document.querySelector('#portal-light');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          const animationDuration = 10;
+          const pauseBeforeFadeIn = 10;
 
-      await sleep(500);
+          const animateOpacity = (element, from, to, duration) => {
+            return new Promise(resolve => {
+              element.setAttribute('animation', {
+                property: 'opacity',
+                from: from,
+                to: to,
+                dur: duration,
+                easing: 'easeInOutQuad'
+              });
+              element.addEventListener('animationcomplete', function handler() {
+                if (to === 0) {
+                  element.classList.remove('clickable');
+                } else if (to > 0) {
+                  element.classList.add('clickable');
+                }
+                element.removeEventListener('animationcomplete', handler);
+                resolve();
+              }, { once: true });
+            });
+          };
+
+          // Функция для плавного затухания звука
+          const fadeOutSound = (sound, duration) => {
+            return new Promise(resolve => {
+              const initialVolume = sound.getAttribute('volume') || 0.5;
+              let currentVolume = initialVolume;
+              const step = initialVolume / (duration / 100); // Шаг уменьшения громкости
+
+              const fadeInterval = setInterval(() => {
+                currentVolume -= step;
+                if (currentVolume <= 0) {
+                  currentVolume = 0;
+                  sound.components.sound.stopSound();
+                  clearInterval(fadeInterval);
+                  resolve();
+                }
+                sound.setAttribute('volume', currentVolume);
+              }, 100);
+            });
+          };
+
+          for (let i = 0; i < messages.length - 1; i++) {
+            const current = document.querySelector(messages[i].id);
+            const next = document.querySelector(messages[i + 1].id);
+
+            await sleep(messages[i].delay - animationDuration);
+            await animateOpacity(current, 1, 0, animationDuration);
+            current.parentNode.removeChild(current);
+            await sleep(pauseBeforeFadeIn);
+            await animateOpacity(next, 0, 1, animationDuration);
+
+            if (next.id === 'msg-three') {
+              // Плавное затухание первой музыки (например, за 2 секунды)
+              await fadeOutSound(firstMusic, 400);
+              
+              // Запуск второй музыки
+              secondMusic.components.sound.playSound();
+            }
+
+        // Когда появляется msg-six, плавно показываем порталы
+      if (next.id === 'msg-six') {
+        const portalsContainer = document.querySelector('#portals');
+        const portals = portalsContainer.querySelectorAll('a-circle');
+        const portalTexts = portalsContainer.querySelectorAll('a-text');
+        const portalLight = document.querySelector('#portal-light');
+
+        await sleep(500);
 
 
-      // Плавное включение света
-      portalLight.setAttribute('animation', {
-        property: 'intensity',
-        from: '0',
-        to: '55',
-        dur: 1000,
-        easing: 'easeInOutQuad'
-      });
-
-      // Плавное появление порталов с анимацией масштаба и прозрачности
-      for (let j = 0; j < portals.length; j++) {
-        const portal = portals[j];
-        const text = portalTexts[j];
-        
-        //  класс clickable для взаимодействия
-        portal.classList.add('clickable');
-
-        // Изначально задаём масштаб 0 и прозрачность 0
-        portal.setAttribute('scale', '0 0 0');
-        portal.setAttribute('opacity', '0');
-        text.setAttribute('scale', '0 0 0');
-        text.setAttribute('opacity', '0');
-
-        // Анимация масштаба портала
-        portal.setAttribute('animation__scale', {
-          property: 'scale',
-          from: '0 0 0',
-          to: '1 1 1',
-          dur: 1000, // Длительность анимации в миллисекундах
-          easing: 'easeInOutQuad'
-        });
-
-        // Анимация прозрачности портала
-        portal.setAttribute('animation__opacity', {
-          property: 'opacity',
+        // Плавное включение света
+        portalLight.setAttribute('animation', {
+          property: 'intensity',
           from: '0',
-          to: '0.8',
+          to: '55',
           dur: 1000,
           easing: 'easeInOutQuad'
         });
 
-        // Анимация масштаба текста
-        text.setAttribute('animation__scale', {
-          property: 'scale',
-          from: '0 0 0',
-          to: '0.5 1 1',
-          dur: 1000,
-          easing: 'easeInOutQuad'
-        });
+        // Плавное появление порталов с анимацией масштаба и прозрачности
+        for (let j = 0; j < portals.length; j++) {
+          const portal = portals[j];
+          const text = portalTexts[j];
+          
+          //  класс clickable для взаимодействия
+          portal.classList.add('clickable');
 
-        // Анимация прозрачности текста
-        text.setAttribute('animation__opacity', {
-          property: 'opacity',
-          from: '0',
-          to: '1',
-          dur: 1000,
-          easing: 'easeInOutQuad'
-        });
+          // Изначально задаём масштаб 0 и прозрачность 0
+          portal.setAttribute('scale', '0 0 0');
+          portal.setAttribute('opacity', '0');
+          text.setAttribute('scale', '0 0 0');
+          text.setAttribute('opacity', '0');
 
-        // Задержка между появлением порталов
-        await sleep(300);
-      }
+          // Анимация масштаба портала
+          portal.setAttribute('animation__scale', {
+            property: 'scale',
+            from: '0 0 0',
+            to: '1 1 1',
+            dur: 1000, // Длительность анимации в миллисекундах
+            easing: 'easeInOutQuad'
+          });
 
-    }
+          // Анимация прозрачности портала
+          portal.setAttribute('animation__opacity', {
+            property: 'opacity',
+            from: '0',
+            to: '0.8',
+            dur: 1000,
+            easing: 'easeInOutQuad'
+          });
 
+          // Анимация масштаба текста
+          text.setAttribute('animation__scale', {
+            property: 'scale',
+            from: '0 0 0',
+            to: '0.5 1 1',
+            dur: 1000,
+            easing: 'easeInOutQuad'
+          });
 
+          // Анимация прозрачности текста
+          text.setAttribute('animation__opacity', {
+            property: 'opacity',
+            from: '0',
+            to: '1',
+            dur: 1000,
+            easing: 'easeInOutQuad'
+          });
+
+          // Задержка между появлением порталов
+          await sleep(300);
         }
 
-        
-      });
-
-    
-      // Логика переключения обратно на основную сцену
-      document.querySelector('#button-back').addEventListener('click', function () {
-        console.log('click');
-        const mainScene = document.querySelector('#main-scene');
-        const transitionScene = document.querySelector('#transition-scene');
-        const buttonNext = document.querySelector('#button-next');
-        const buttonBack = document.querySelector('#button-back');
-        const background = document.querySelector('#background');
-        
-        transitionScene.setAttribute('visible', 'false');
-        mainScene.setAttribute('visible', 'true');
-        buttonBack.classList.remove('clickable');
-        buttonNext.classList.add('clickable');
-        background.setAttribute('environment', 'preset: starry');
-      });
-    
-
-
-      // Объект с конфигурацией порталов
-      const portalConfig = {
-        'portal1': { scene: 'rpo-scene', preset: 'checkerboard' },
-        'portal2': { scene: 'dizayn-scene', preset: 'default' },
-        'portal3': { scene: 'turizm-scene', preset: 'egypt' },
-        'portal4': { scene: 'service-scene', preset: 'japan' },
-        'portal5': { scene: 'reklama-scene', preset: 'volcano' }
-      };
-
-      // Единая функция инициализации порталов
-      function initializePortals() {
-        const portals = document.querySelector('#portals').querySelectorAll('a-circle');
-        const transitionScene = document.querySelector('#transition-scene');
-        const background = document.querySelector('#background');
-        const nextButton = document.querySelector('#next-text-button');
-
-        Object.entries(portalConfig).forEach(([portalId, { scene, preset }]) => {
-          document.querySelector(`#${portalId} a-circle`).addEventListener('click', async () => {
-            console.log(`${portalId} clicked`);
-            
-            // Отключаем кликабельность всех порталов
-            portals.forEach(portal => portal.classList.remove('clickable'));
-            
-            // Переключаем сцены
-            transitionScene.setAttribute('visible', 'false');
-            document.querySelector(`#${scene}`).setAttribute('visible', 'true');
-            background.setAttribute('environment', `preset: ${preset}`);
-
-            // Обработка специальной логики для rpo-scene
-            if (scene === 'rpo-scene') {
-              const firstText = document.querySelector('#accompanier-rpo-text-one');
-              await typeText(firstText, firstText.getAttribute('value'));
-              nextButton.setAttribute('visible', 'true');
-              nextButton.querySelector('a-plane').classList.add('clickable');
-            }
-          });
-        });
       }
 
-      // Инициализация
-      initializePortals();
+
+          }
+
+          
+        });
+
+      
+        // Логика переключения обратно на основную сцену
+        document.querySelector('#button-back').addEventListener('click', function () {
+          console.log('click');
+          const mainScene = document.querySelector('#main-scene');
+          const transitionScene = document.querySelector('#transition-scene');
+          const buttonNext = document.querySelector('#button-next');
+          const buttonBack = document.querySelector('#button-back');
+          const background = document.querySelector('#background');
+          
+          transitionScene.setAttribute('visible', 'false');
+          mainScene.setAttribute('visible', 'true');
+          buttonBack.classList.remove('clickable');
+          buttonNext.classList.add('clickable');
+          background.setAttribute('environment', 'preset: starry');
+        });
+      
 
 
-// -----------------------МЕХАНИКИ ДЛЯ РПО-----------------------
+        // Объект с конфигурацией порталов
+        const portalConfig = {
+          'portal1': { scene: 'rpo-scene', preset: 'checkerboard' },
+          'portal2': { scene: 'dizayn-scene', preset: 'default' },
+          'portal3': { scene: 'turizm-scene', preset: 'egypt' },
+          'portal4': { scene: 'service-scene', preset: 'japan' },
+          'portal5': { scene: 'reklama-scene', preset: 'volcano' }
+        };
+
+        // Единая функция инициализации порталов
+        function initializePortals() {
+          const portals = document.querySelector('#portals').querySelectorAll('a-circle');
+          const transitionScene = document.querySelector('#transition-scene');
+          const background = document.querySelector('#background');
+          const nextButton = document.querySelector('#next-text-button');
+
+          Object.entries(portalConfig).forEach(([portalId, { scene, preset }]) => {
+            document.querySelector(`#${portalId} a-circle`).addEventListener('click', async () => {
+              console.log(`${portalId} clicked`);
+              
+              // Отключаем кликабельность всех порталов
+              portals.forEach(portal => portal.classList.remove('clickable'));
+              
+              // Переключаем сцены
+              transitionScene.setAttribute('visible', 'false');
+              document.querySelector(`#${scene}`).setAttribute('visible', 'true');
+              background.setAttribute('environment', `preset: ${preset}`);
+
+              // Обработка специальной логики для rpo-scene
+              if (scene === 'rpo-scene') {
+                const firstText = document.querySelector('#accompanier-rpo-text-one');
+                await typeText(firstText, firstText.getAttribute('value'));
+                nextButton.setAttribute('visible', 'true');
+                nextButton.querySelector('a-plane').classList.add('clickable');
+              }
+            });
+          });
+        }
+
+        // Инициализация
+        initializePortals();
+
+
+  // -----------------------МЕХАНИКИ ДЛЯ РПО-----------------------
+      
+  // Конфигурация интерактивных элементов
+  const interactiveConfig = {
+    'accompanier-rpo-text-five-interactive': {
+      buttonId: 'rpo-one-button-interactive',
+      nextTextId: 'accompanier-rpo-text-six'
+    },
+    'accompanier-rpo-text-eight-interactive': {
+      buttonId: 'rpo-two-button-interactive',
+      nextTextId: 'accompanier-rpo-text-nine'
+    },
+    'accompanier-rpo-text-eleven-interactive': {
+      buttonId: 'rpo-three-button-interactive',
+      nextTextId: 'accompanier-rpo-text-twelve'
+    }
+  };
+
+  // Конфигурация для множественного выбора
+  const multipleChoiceConfig = {
+    'accompanier-rpo-text-seventeen': {
+      choices: [
+        {
+          buttonId: 'yes-button-seventeen',
+          responseTextId: 'accompanier-rpo-text-eighteen-yes'
+        },
+        {
+          buttonId: 'no-button-seventeen',
+          responseTextId: 'accompanier-rpo-text-eighteen-no'
+        }
+      ]
+    },
+    'accompanier-rpo-text-thirteen': {
+      choices: [
+        {
+          buttonId: 'choice-a-button-fourteen',
+          responseTextId: 'accompanier-rpo-text-fourteen-a'
+        },
+        {
+          buttonId: 'choice-b-button-fourteen',
+          responseTextId: 'accompanier-rpo-text-fourteen-b'
+        },
+        {
+          buttonId: 'choice-c-button-fourteen',
+          responseTextId: 'accompanier-rpo-text-fourteen-c'
+        }
+      ]
+    }
+  };
+
+  // Универсальная функция для обработки интерактивных кнопок
+  function handleInteractiveButton(buttonId, currentTextId, nextTextId) {
+    const button = document.querySelector(`#${buttonId}`);
+    if (!button) return; // Если кнопка уже удалена, ничего не делаем
     
+    button.addEventListener('click', async () => {
+      const nextButton = document.querySelector('#next-text-button');
+      const nextPlane = nextButton.querySelector('a-plane');
+      const currentText = document.querySelector(`#${currentTextId}`);
+      const nextText = document.querySelector(`#${nextTextId}`);
+
+      currentText.setAttribute('visible', 'false');
+      button.setAttribute('visible', 'false');
+      button.querySelector('a-plane').classList.remove('clickable');
+
+      nextText.setAttribute('visible', 'true');
+      await typeText(nextText, nextText.getAttribute('value'));
+
+      nextButton.setAttribute('visible', 'true');
+      nextPlane.classList.add('clickable');
+
+      button.parentNode.removeChild(button);
+    });
+  }
+
+  // Функция обработки множественного выбора
+  function handleMultipleChoice(textId) {
+    const config = multipleChoiceConfig[textId];
+    if (!config) return;
+
+    const nextButton = document.querySelector('#next-text-button');
+    const nextPlane = nextButton.querySelector('a-plane');
+    const currentText = document.querySelector(`#${textId}`);
+    const choiceButtons = config.choices.map(choice => document.querySelector(`#${choice.buttonId}`));
+
+    // Показываем кнопки выбора
+    choiceButtons.forEach(button => {
+      button.setAttribute('visible', 'true');
+      button.querySelector('a-plane').classList.add('clickable');
+    });
+
+    // Обработчик для каждой кнопки выбора
+    config.choices.forEach(choice => {
+      const button = document.querySelector(`#${choice.buttonId}`);
+      button.addEventListener('click', async () => {
+        // Скрываем все кнопки выбора
+        choiceButtons.forEach(btn => {
+          btn.setAttribute('visible', 'false');
+          btn.querySelector('a-plane').classList.remove('clickable');
+          btn.parentNode.removeChild(btn); // Удаляем кнопки
+        });
+
+        // Скрываем текущий текст и показываем ответ
+        currentText.setAttribute('visible', 'false');
+        const responseText = document.querySelector(`#${choice.responseTextId}`);
+        responseText.setAttribute('visible', 'true');
+        await typeText(responseText, responseText.getAttribute('value'));
+
+        // Показываем кнопку Next
+        nextButton.setAttribute('visible', 'true');
+        nextPlane.classList.add('clickable');
+      });
+    });
+  }
+
+  // Инициализация всех интерактивных кнопок
+  Object.entries(interactiveConfig).forEach(([textId, { buttonId, nextTextId }]) => {
+    handleInteractiveButton(buttonId, textId, nextTextId);
+  });
+
+  // Обновленный обработчик next-text-button
+  document.querySelector('#next-text-button').addEventListener('click', async function() {
+    const texts = [
+      '#accompanier-rpo-text-one',
+      '#accompanier-rpo-text-two',
+      '#accompanier-rpo-text-three',
+      '#accompanier-rpo-text-four',
+      '#accompanier-rpo-text-five-interactive',
+      '#accompanier-rpo-text-six',
+      '#accompanier-rpo-text-seven',
+      '#accompanier-rpo-text-eight-interactive',
+      '#accompanier-rpo-text-nine',
+      '#accompanier-rpo-text-ten',
+      '#accompanier-rpo-text-eleven-interactive',
+      '#accompanier-rpo-text-twelve',
+      '#accompanier-rpo-text-thirteen',
+      '#accompanier-rpo-text-fourteen-a',
+      '#accompanier-rpo-text-fourteen-b',
+      '#accompanier-rpo-text-fourteen-c',
+      '#accompanier-rpo-text-fiveteen',
+      '#accompanier-rpo-text-sixteen',
+      '#accompanier-rpo-text-seventeen',
+      '#accompanier-rpo-text-eighteen-yes',
+      '#accompanier-rpo-text-eighteen-no',
+      '#accompanier-rpo-text-nineteen'
+    ].map(id => document.querySelector(id));
+
+    const nextButton = document.querySelector('#next-text-button');
+    const nextPlane = nextButton.querySelector('a-plane');
+    const backButton = document.querySelector('#rpo-back-to-portals'); // Добавляем кнопку "Назад"
+
+    const currentIndex = texts.findIndex(text => text.getAttribute('visible'));
+    if (currentIndex < texts.length - 1) {
+      nextButton.setAttribute('visible', 'false');
+      nextPlane.classList.remove('clickable');
+
+      texts[currentIndex].setAttribute('visible', 'false');
+
+      let nextIndex = currentIndex + 1;
+
+      // Проверяем, если текущий текст — один из ответов fourteen, переходим к fiveteen
+      if (['accompanier-rpo-text-fourteen-a', 'accompanier-rpo-text-fourteen-b', 'accompanier-rpo-text-fourteen-c']
+          .includes(texts[currentIndex].id)) {
+        nextIndex = texts.findIndex(text => text.id === 'accompanier-rpo-text-fiveteen');
+      }
+      // Проверяем, если текущий текст — один из ответов eighteen, переходим к nineteen
+      else if (['accompanier-rpo-text-eighteen-yes', 'accompanier-rpo-text-eighteen-no']
+          .includes(texts[currentIndex].id)) {
+        nextIndex = texts.findIndex(text => text.id === 'accompanier-rpo-text-nineteen');
+      }
+
+      const nextText = texts[nextIndex];
+      nextText.setAttribute('visible', 'true');
+      await typeText(nextText, nextText.getAttribute('value'));
+
+      // Проверяем, если достигнут accompanier-rpo-text-nineteen
+      if (nextText.id === 'accompanier-rpo-text-nineteen') {
+        nextButton.setAttribute('visible', 'false'); // Скрываем кнопку "Next"
+        nextPlane.classList.remove('clickable');
+        backButton.setAttribute('visible', 'true'); // Показываем кнопку "Назад"
+        backButton.querySelector('a-plane').classList.add('clickable');
+      } else if (interactiveConfig[nextText.id]) {
+        const button = document.querySelector(`#${interactiveConfig[nextText.id].buttonId}`);
+        if (button) {
+          button.setAttribute('visible', 'true');
+          button.querySelector('a-plane').classList.add('clickable');
+        }
+      } else if (multipleChoiceConfig[nextText.id]) {
+        handleMultipleChoice(nextText.id);
+      } else {
+        nextButton.setAttribute('visible', 'true');
+        nextPlane.classList.add('clickable');
+      }
+    }
+  });
+
+  document.querySelector('#rpo-back-to-portals').addEventListener('click', function() {
+    const rpoScene = document.querySelector('#rpo-scene');
+    const transitionScene = document.querySelector('#transition-scene');
+    const background = document.querySelector('#background');
+    const backButton = document.querySelector('#rpo-back-to-portals');
+    const portal1 = document.querySelector('#portal1 a-circle'); // Портал RPO
+    const portals = document.querySelector('#portals').querySelectorAll('a-circle');
+    const portalLight = document.querySelector('#portal-light');
+
+    // Добавляем остановку видео
+    const video = document.querySelector('#rpo-video-code');
+    if (video) {
+      video.components.material.data.src.pause();
+    }
+
+    // Скрываем текущую сцену и показываем сцену с порталами
+    rpoScene.setAttribute('visible', 'false');
+    transitionScene.setAttribute('visible', 'true');
+    background.setAttribute('environment', 'preset: none'); // Возвращаем фон с порталами
+
+    // Скрываем кнопку "Назад"
+    backButton.setAttribute('visible', 'false');
+    backButton.querySelector('a-plane').classList.remove('clickable');
+
+    // Восстанавливаем видимость порталов и их подсветку
+    portals.forEach(portal => {
+      if (portal === portal1) {
+        // Делаем portal1 серым и некликабельным
+        portal.setAttribute('color', '#808080'); // Серый цвет
+        portal.setAttribute('opacity', '0.8');
+        portal.classList.remove('clickable');
+      } else {
+        // Остальные порталы остаются кликабельными и с исходным цветом
+        portal.setAttribute('opacity', '0.8');
+        portal.classList.add('clickable');
+      }
+    });
+    portalLight.setAttribute('intensity', '55');
+
+    // Показываем последний текст сцены перехода
+    const msgSix = document.querySelector('#msg-six');
+    if (msgSix) {
+      msgSix.setAttribute('visible', 'true');
+      msgSix.setAttribute('opacity', '1');
+    }
+  });
+  // -----------------------КОНЕЦ МЕХАНИКИ ДЛЯ РПО-----------------------
+
+  // -----------------------МЕХАНИКИ ДЛЯ DIZAYN-SCENE-----------------------
+
 // Конфигурация интерактивных элементов
-const interactiveConfig = {
-  'accompanier-rpo-text-five-interactive': {
-    buttonId: 'rpo-one-button-interactive',
-    nextTextId: 'accompanier-rpo-text-six'
+const dizaynInteractiveConfig = {
+  'accompanier-diz-text-five-interactive': {
+    buttonId: 'dizayn-one-button-interactive',
+    nextTextId: 'accompanier-diz-text-six'
   },
-  'accompanier-rpo-text-eight-interactive': {
-    buttonId: 'rpo-two-button-interactive',
-    nextTextId: 'accompanier-rpo-text-nine'
+  'accompanier-diz-text-eight-interactive': {
+    buttonId: 'dizayn-two-button-interactive',
+    nextTextId: 'accompanier-diz-text-nine'
   },
-  'accompanier-rpo-text-eleven-interactive': {
-    buttonId: 'rpo-three-button-interactive',
-    nextTextId: 'accompanier-rpo-text-twelve'
+  'accompanier-diz-text-eleven-interactive': {
+    buttonId: 'dizayn-three-button-interactive',
+    nextTextId: 'accompanier-diz-text-twelve'
   }
 };
 
 // Конфигурация для множественного выбора
-const multipleChoiceConfig = {
-  'accompanier-rpo-text-seventeen': {
+const dizaynMultipleChoiceConfig = {
+  'accompanier-diz-text-seventeen': {
     choices: [
       {
-        buttonId: 'yes-button-seventeen',
-        responseTextId: 'accompanier-rpo-text-eighteen-yes'
+        buttonId: 'dizayn-yes-button-seventeen',
+        responseTextId: 'accompanier-diz-text-eighteen-yes'
       },
       {
-        buttonId: 'no-button-seventeen',
-        responseTextId: 'accompanier-rpo-text-eighteen-no'
+        buttonId: 'dizayn-no-button-seventeen',
+        responseTextId: 'accompanier-diz-text-eighteen-no'
       }
     ]
   },
-  'accompanier-rpo-text-thirteen': {
+  'accompanier-diz-text-thirteen': {
     choices: [
       {
-        buttonId: 'choice-a-button-fourteen',
-        responseTextId: 'accompanier-rpo-text-fourteen-a'
+        buttonId: 'dizayn-choice-a-button-fourteen',
+        responseTextId: 'accompanier-diz-text-fourteen-a'
       },
       {
-        buttonId: 'choice-b-button-fourteen',
-        responseTextId: 'accompanier-rpo-text-fourteen-b'
+        buttonId: 'dizayn-choice-b-button-fourteen',
+        responseTextId: 'accompanier-diz-text-fourteen-b'
       },
       {
-        buttonId: 'choice-c-button-fourteen',
-        responseTextId: 'accompanier-rpo-text-fourteen-c'
+        buttonId: 'dizayn-choice-c-button-fourteen',
+        responseTextId: 'accompanier-diz-text-fourteen-c'
       }
     ]
   }
 };
 
-// Универсальная функция для обработки интерактивных кнопок
-function handleInteractiveButton(buttonId, currentTextId, nextTextId) {
-  const button = document.querySelector(`#${buttonId}`);
-  if (!button) return; // Если кнопка уже удалена, ничего не делаем
-  
-  button.addEventListener('click', async () => {
-    const nextButton = document.querySelector('#next-text-button');
-    const nextPlane = nextButton.querySelector('a-plane');
-    const currentText = document.querySelector(`#${currentTextId}`);
-    const nextText = document.querySelector(`#${nextTextId}`);
-
-    currentText.setAttribute('visible', 'false');
-    button.setAttribute('visible', 'false');
-    button.querySelector('a-plane').classList.remove('clickable');
-
-    nextText.setAttribute('visible', 'true');
-    await typeText(nextText, nextText.getAttribute('value'));
-
-    nextButton.setAttribute('visible', 'true');
-    nextPlane.classList.add('clickable');
-
-    button.parentNode.removeChild(button);
-  });
-}
-
-// Функция обработки множественного выбора
-function handleMultipleChoice(textId) {
-  const config = multipleChoiceConfig[textId];
-  if (!config) return;
-
-  const nextButton = document.querySelector('#next-text-button');
-  const nextPlane = nextButton.querySelector('a-plane');
-  const currentText = document.querySelector(`#${textId}`);
-  const choiceButtons = config.choices.map(choice => document.querySelector(`#${choice.buttonId}`));
-
-  // Показываем кнопки выбора
-  choiceButtons.forEach(button => {
-    button.setAttribute('visible', 'true');
-    button.querySelector('a-plane').classList.add('clickable');
-  });
-
-  // Обработчик для каждой кнопки выбора
-  config.choices.forEach(choice => {
-    const button = document.querySelector(`#${choice.buttonId}`);
-    button.addEventListener('click', async () => {
-      // Скрываем все кнопки выбора
-      choiceButtons.forEach(btn => {
-        btn.setAttribute('visible', 'false');
-        btn.querySelector('a-plane').classList.remove('clickable');
-        btn.parentNode.removeChild(btn); // Удаляем кнопки
-      });
-
-      // Скрываем текущий текст и показываем ответ
-      currentText.setAttribute('visible', 'false');
-      const responseText = document.querySelector(`#${choice.responseTextId}`);
-      responseText.setAttribute('visible', 'true');
-      await typeText(responseText, responseText.getAttribute('value'));
-
-      // Показываем кнопку Next
-      nextButton.setAttribute('visible', 'true');
-      nextPlane.classList.add('clickable');
-    });
-  });
-}
-
-// Инициализация всех интерактивных кнопок
-Object.entries(interactiveConfig).forEach(([textId, { buttonId, nextTextId }]) => {
+// Инициализация интерактивных кнопок для dizayn-scene
+Object.entries(dizaynInteractiveConfig).forEach(([textId, { buttonId, nextTextId }]) => {
   handleInteractiveButton(buttonId, textId, nextTextId);
 });
 
-// Обновленный обработчик next-text-button
+// Обновленный обработчик next-text-button для dizayn-scene
 document.querySelector('#next-text-button').addEventListener('click', async function() {
-  const texts = [
-    '#accompanier-rpo-text-one',
-    '#accompanier-rpo-text-two',
-    '#accompanier-rpo-text-three',
-    '#accompanier-rpo-text-four',
-    '#accompanier-rpo-text-five-interactive',
-    '#accompanier-rpo-text-six',
-    '#accompanier-rpo-text-seven',
-    '#accompanier-rpo-text-eight-interactive',
-    '#accompanier-rpo-text-nine',
-    '#accompanier-rpo-text-ten',
-    '#accompanier-rpo-text-eleven-interactive',
-    '#accompanier-rpo-text-twelve',
-    '#accompanier-rpo-text-thirteen',
-    '#accompanier-rpo-text-fourteen-a',
-    '#accompanier-rpo-text-fourteen-b',
-    '#accompanier-rpo-text-fourteen-c',
-    '#accompanier-rpo-text-fiveteen',
-    '#accompanier-rpo-text-sixteen',
-    '#accompanier-rpo-text-seventeen',
-    '#accompanier-rpo-text-eighteen-yes',
-    '#accompanier-rpo-text-eighteen-no',
-    '#accompanier-rpo-text-nineteen'
+  const dizaynTexts = [
+    '#accompanier-diz-text-one',
+    '#accompanier-diz-text-two',
+    '#accompanier-diz-text-three',
+    '#accompanier-diz-text-four',
+    '#accompanier-diz-text-five-interactive',
+    '#accompanier-diz-text-six',
+    '#accompanier-diz-text-seven',
+    '#accompanier-diz-text-eight-interactive',
+    '#accompanier-diz-text-nine',
+    '#accompanier-diz-text-ten',
+    '#accompanier-diz-text-eleven-interactive',
+    '#accompanier-diz-text-twelve',
+    '#accompanier-diz-text-thirteen',
+    '#accompanier-diz-text-fourteen-a',
+    '#accompanier-diz-text-fourteen-b',
+    '#accompanier-diz-text-fourteen-c',
+    '#accompanier-diz-text-fiveteen',
+    '#accompanier-diz-text-sixteen',
+    '#accompanier-diz-text-seventeen',
+    '#accompanier-diz-text-eighteen-yes',
+    '#accompanier-diz-text-eighteen-no',
+    '#accompanier-diz-text-nineteen'
   ].map(id => document.querySelector(id));
 
   const nextButton = document.querySelector('#next-text-button');
   const nextPlane = nextButton.querySelector('a-plane');
-  const backButton = document.querySelector('#rpo-back-to-portals'); // Добавляем кнопку "Назад"
+  const backButton = document.querySelector('#dizayn-back-to-portals');
 
-  const currentIndex = texts.findIndex(text => text.getAttribute('visible'));
-  if (currentIndex < texts.length - 1) {
+  const currentIndex = dizaynTexts.findIndex(text => text.getAttribute('visible'));
+  if (currentIndex < dizaynTexts.length - 1) {
     nextButton.setAttribute('visible', 'false');
     nextPlane.classList.remove('clickable');
 
-    texts[currentIndex].setAttribute('visible', 'false');
+    dizaynTexts[currentIndex].setAttribute('visible', 'false');
 
     let nextIndex = currentIndex + 1;
 
-    // Проверяем, если текущий текст — один из ответов fourteen, переходим к fiveteen
-    if (['accompanier-rpo-text-fourteen-a', 'accompanier-rpo-text-fourteen-b', 'accompanier-rpo-text-fourteen-c']
-        .includes(texts[currentIndex].id)) {
-      nextIndex = texts.findIndex(text => text.id === 'accompanier-rpo-text-fiveteen');
-    }
-    // Проверяем, если текущий текст — один из ответов eighteen, переходим к nineteen
-    else if (['accompanier-rpo-text-eighteen-yes', 'accompanier-rpo-text-eighteen-no']
-        .includes(texts[currentIndex].id)) {
-      nextIndex = texts.findIndex(text => text.id === 'accompanier-rpo-text-nineteen');
+    if (['accompanier-diz-text-fourteen-a', 'accompanier-diz-text-fourteen-b', 'accompanier-diz-text-fourteen-c']
+        .includes(dizaynTexts[currentIndex].id)) {
+      nextIndex = dizaynTexts.findIndex(text => text.id === 'accompanier-diz-text-fiveteen');
+    } else if (['accompanier-diz-text-eighteen-yes', 'accompanier-diz-text-eighteen-no']
+        .includes(dizaynTexts[currentIndex].id)) {
+      nextIndex = dizaynTexts.findIndex(text => text.id === 'accompanier-diz-text-nineteen');
     }
 
-    const nextText = texts[nextIndex];
+    const nextText = dizaynTexts[nextIndex];
     nextText.setAttribute('visible', 'true');
     await typeText(nextText, nextText.getAttribute('value'));
 
-    // Проверяем, если достигнут accompanier-rpo-text-nineteen
-    if (nextText.id === 'accompanier-rpo-text-nineteen') {
-      nextButton.setAttribute('visible', 'false'); // Скрываем кнопку "Next"
+    if (nextText.id === 'accompanier-diz-text-nineteen') {
+      nextButton.setAttribute('visible', 'false');
       nextPlane.classList.remove('clickable');
-      backButton.setAttribute('visible', 'true'); // Показываем кнопку "Назад"
+      backButton.setAttribute('visible', 'true');
       backButton.querySelector('a-plane').classList.add('clickable');
-    } else if (interactiveConfig[nextText.id]) {
-      const button = document.querySelector(`#${interactiveConfig[nextText.id].buttonId}`);
+    } else if (dizaynInteractiveConfig[nextText.id]) {
+      const button = document.querySelector(`#${dizaynInteractiveConfig[nextText.id].buttonId}`);
       if (button) {
         button.setAttribute('visible', 'true');
         button.querySelector('a-plane').classList.add('clickable');
       }
-    } else if (multipleChoiceConfig[nextText.id]) {
+    } else if (dizaynMultipleChoiceConfig[nextText.id]) {
       handleMultipleChoice(nextText.id);
     } else {
       nextButton.setAttribute('visible', 'true');
@@ -1269,55 +1444,75 @@ document.querySelector('#next-text-button').addEventListener('click', async func
   }
 });
 
-document.querySelector('#rpo-back-to-portals').addEventListener('click', function() {
-  const rpoScene = document.querySelector('#rpo-scene');
+// Обработчик кнопки "Назад" для dizayn-scene
+document.querySelector('#dizayn-back-to-portals').addEventListener('click', function() {
+  const dizaynScene = document.querySelector('#dizayn-scene');
   const transitionScene = document.querySelector('#transition-scene');
   const background = document.querySelector('#background');
-  const backButton = document.querySelector('#rpo-back-to-portals');
-  const portal1 = document.querySelector('#portal1 a-circle'); // Портал RPO
+  const backButton = document.querySelector('#dizayn-back-to-portals');
+  const portal2 = document.querySelector('#portal2 a-circle'); // Портал Dizayn
   const portals = document.querySelector('#portals').querySelectorAll('a-circle');
-  const portalLight = document.querySelector('#portal-light');
+  const portalLight = document.querySelector('#dizayn-light');
 
-  // Добавляем остановку видео
-  const video = document.querySelector('#rpo-video-code');
-  if (video) {
-    video.components.material.data.src.pause();
-  }
-
-  // Скрываем текущую сцену и показываем сцену с порталами
-  rpoScene.setAttribute('visible', 'false');
+  dizaynScene.setAttribute('visible', 'false');
   transitionScene.setAttribute('visible', 'true');
-  background.setAttribute('environment', 'preset: none'); // Возвращаем фон с порталами
+  background.setAttribute('environment', 'preset: none');
 
-  // Скрываем кнопку "Назад"
   backButton.setAttribute('visible', 'false');
   backButton.querySelector('a-plane').classList.remove('clickable');
 
-  // Восстанавливаем видимость порталов и их подсветку
   portals.forEach(portal => {
-    if (portal === portal1) {
-      // Делаем portal1 серым и некликабельным
-      portal.setAttribute('color', '#808080'); // Серый цвет
+    if (portal === portal2) {
+      portal.setAttribute('color', '#808080');
       portal.setAttribute('opacity', '0.8');
       portal.classList.remove('clickable');
     } else {
-      // Остальные порталы остаются кликабельными и с исходным цветом
       portal.setAttribute('opacity', '0.8');
       portal.classList.add('clickable');
     }
   });
   portalLight.setAttribute('intensity', '55');
 
-  // Показываем последний текст сцены перехода
   const msgSix = document.querySelector('#msg-six');
   if (msgSix) {
     msgSix.setAttribute('visible', 'true');
     msgSix.setAttribute('opacity', '1');
   }
 });
-// -----------------------КОНЕЦ МЕХАНИКИ ДЛЯ РПО-----------------------
+
+// Обновление initializePortals для запуска dizayn-scene
+function initializePortals() {
+  const portals = document.querySelector('#portals').querySelectorAll('a-circle');
+  const transitionScene = document.querySelector('#transition-scene');
+  const background = document.querySelector('#background');
+  const nextButton = document.querySelector('#next-text-button');
+
+  Object.entries(portalConfig).forEach(([portalId, { scene, preset }]) => {
+    document.querySelector(`#${portalId} a-circle`).addEventListener('click', async () => {
+      console.log(`${portalId} clicked`);
+      portals.forEach(portal => portal.classList.remove('clickable'));
+      transitionScene.setAttribute('visible', 'false');
+      document.querySelector(`#${scene}`).setAttribute('visible', 'true');
+      background.setAttribute('environment', `preset: ${preset}`);
+
+      if (scene === 'rpo-scene') {
+        const firstText = document.querySelector('#accompanier-rpo-text-one');
+        await typeText(firstText, firstText.getAttribute('value'));
+        nextButton.setAttribute('visible', 'true');
+        nextButton.querySelector('a-plane').classList.add('clickable');
+      } else if (scene === 'dizayn-scene') {
+        const firstText = document.querySelector('#accompanier-diz-text-one');
+        await typeText(firstText, firstText.getAttribute('value'));
+        nextButton.setAttribute('visible', 'true');
+        nextButton.querySelector('a-plane').classList.add('clickable');
+      }
+    });
+  });
+}
+
+// -----------------------КОНЕЦ МЕХАНИКИ ДЛЯ DIZAYN-SCENE-----------------------
 
 
-    </script>
-  </body>
-</html>
+      </script>
+    </body>
+  </html>
