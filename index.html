@@ -1208,6 +1208,14 @@ function handleMultipleChoice(sceneKey, textId) {
   });
 }
 
+const visitedPortals = {
+  portal1: false,
+  portal2: false,
+  portal3: false,
+  portal4: false,
+  portal5: false
+};
+
 // Универсальная функция инициализации сцены
 function initializeScene(sceneKey) {
   const { nextButtonId, backButtonId, portalId, sceneId, firstTextId, preset, texts, interactive, multipleChoice } = sceneConfig[sceneKey];
@@ -1279,10 +1287,14 @@ function initializeScene(sceneKey) {
     }
   });
 
-  // Обработчик кнопки Back
-  backButton.addEventListener('click', () => {
+// Обработчик кнопки Back
+backButton.addEventListener('click', () => {
     const video = sceneKey === 'rpo' ? document.querySelector('#rpo-video-code') : null;
     if (video) video.components.material.data.src.pause();
+
+    // Отмечаем текущий портал как посещённый
+    const portalKey = portalId.split(' ')[0].replace('#', ''); // Например, 'portal1'
+    visitedPortals[portalKey] = true;
 
     scene.setAttribute('visible', 'false');
     transitionScene.setAttribute('visible', 'true');
@@ -1291,16 +1303,20 @@ function initializeScene(sceneKey) {
     backButton.setAttribute('visible', 'false');
     backButton.querySelector('a-plane').classList.remove('clickable');
 
+    // Обновляем состояние всех порталов
     portals.forEach(p => {
-      if (p === portal) {
-        p.setAttribute('color', '#808080');
+      const pId = p.parentNode.id; // Например, 'portal1'
+      if (visitedPortals[pId]) {
+        p.setAttribute('color', '#808080'); // Серый цвет для посещённых
         p.setAttribute('opacity', '0.8');
-        p.classList.remove('clickable');
+        p.classList.remove('clickable'); // Убираем кликабельность
       } else {
+        p.setAttribute('color', portalConfig[pId].scene === 'rpo-scene' ? '#00FFFF' : '#FF00FF'); // Исходный цвет
         p.setAttribute('opacity', '0.8');
-        p.classList.add('clickable');
+        p.classList.add('clickable'); // Оставляем кликабельными непосещённые
       }
     });
+
     portalLight.setAttribute('intensity', '55');
 
     const msgSix = document.querySelector('#msg-six');
