@@ -818,9 +818,7 @@
       </a-scene>
 
       <script>
-
-        const visitedPortals = new Set();
-
+        
         // Функция для эффекта печати текста
         function typeText(element, text, speed = 5) {
           return new Promise(resolve => {
@@ -1224,7 +1222,6 @@ function initializeScene(sceneKey) {
 
   // Инициализация портала
   portal.addEventListener('click', async () => {
-    visitedPortals.add(portalId.split(' ')[0]); // Добавляем ID портала (например, 'portal1')
     transitionScene.setAttribute('visible', 'false');
     scene.setAttribute('visible', 'true');
     background.setAttribute('environment', `preset: ${preset}`);
@@ -1282,8 +1279,8 @@ function initializeScene(sceneKey) {
     }
   });
 
-    // Обработчик кнопки Back
-    backButton.addEventListener('click', () => {
+  // Обработчик кнопки Back
+  backButton.addEventListener('click', () => {
     const video = sceneKey === 'rpo' ? document.querySelector('#rpo-video-code') : null;
     if (video) video.components.material.data.src.pause();
 
@@ -1295,15 +1292,13 @@ function initializeScene(sceneKey) {
     backButton.querySelector('a-plane').classList.remove('clickable');
 
     portals.forEach(p => {
-      const portalId = p.parentNode.id; // Получаем ID портала (например, 'portal1')
-      if (visitedPortals.has(portalId)) {
-        p.setAttribute('color', '#808080'); // Серый для посещённых
+      if (p === portal) {
+        p.setAttribute('color', '#808080');
         p.setAttribute('opacity', '0.8');
-        p.classList.remove('clickable'); // Некликабельный
+        p.classList.remove('clickable');
       } else {
-        p.setAttribute('color', '#00FFFF'); // Исходный цвет для portal1, можно настроить
         p.setAttribute('opacity', '0.8');
-        p.classList.add('clickable'); // Кликабельный
+        p.classList.add('clickable');
       }
     });
     portalLight.setAttribute('intensity', '55');
