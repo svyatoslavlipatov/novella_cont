@@ -1208,6 +1208,14 @@ function handleMultipleChoice(sceneKey, textId) {
   });
 }
 
+const visitedPortals = {
+  'portal1': false,
+  'portal2': false,
+  'portal3': false,
+  'portal4': false,
+  'portal5': false
+};
+
 // Универсальная функция инициализации сцены
 function initializeScene(sceneKey) {
   const { nextButtonId, backButtonId, portalId, sceneId, firstTextId, preset, texts, interactive, multipleChoice } = sceneConfig[sceneKey];
@@ -1230,14 +1238,13 @@ function initializeScene(sceneKey) {
     await typeText(firstText, firstText.getAttribute('value'));
     nextButton.setAttribute('visible', 'true');
     nextButton.querySelector('a-plane').classList.add('clickable');
+
+    // Отмечаем портал как посещенный
+    const portalKey = portalId.split(' ')[0].replace('#', ''); // Например, "portal1"
+    visitedPortals[portalKey] = true;
   });
 
-  // Инициализация интерактивных кнопок
-  Object.entries(interactive).forEach(([textId, { buttonId, nextTextId }]) => {
-    handleInteractiveButton(sceneKey, buttonId, textId, nextTextId);
-  });
-
-  // Обработчик кнопки Next
+  // Обработчик кнопки Next (без изменений, оставляем как есть)
   nextButton.addEventListener('click', async () => {
     const textElements = texts.map(id => document.querySelector(id));
     const nextPlane = nextButton.querySelector('a-plane');
@@ -1291,16 +1298,20 @@ function initializeScene(sceneKey) {
     backButton.setAttribute('visible', 'false');
     backButton.querySelector('a-plane').classList.remove('clickable');
 
+    // Обновляем состояние всех порталов
     portals.forEach(p => {
-      if (p === portal) {
-        p.setAttribute('color', '#808080');
+      const portalIdAttr = p.parentNode.id; // Получаем ID родительского элемента (например, "portal1")
+      if (visitedPortals[portalIdAttr]) {
+        p.setAttribute('color', '#808080'); // Серый цвет для посещенных порталов
         p.setAttribute('opacity', '0.8');
-        p.classList.remove('clickable');
+        p.classList.remove('clickable'); // Убираем кликабельность
       } else {
+        p.setAttribute('color', p.getAttribute('color') || '#00FFFF'); // Восстанавливаем исходный цвет
         p.setAttribute('opacity', '0.8');
-        p.classList.add('clickable');
+        p.classList.add('clickable'); // Оставляем кликабельным непосещенные порталы
       }
     });
+
     portalLight.setAttribute('intensity', '55');
 
     const msgSix = document.querySelector('#msg-six');
