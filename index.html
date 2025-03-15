@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="ru">
+    <html>
     <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Visual Novel VR Scene</title>
       <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
       <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
       <script>
         // Шрифт для текста
         AFRAME.registerComponent('custom-font', {
           init: function () {
-            this.el.setAttribute('font', 'msdf/pixel/pix-msdf.json');
-            this.el.setAttribute('font-image', 'msdf/pixel/pix.png');
+            this.el.setAttribute('font', 'msdf/custom-msdf.json');
+            this.el.setAttribute('font-image', 'msdf/custom.png');
             this.el.setAttribute('negate', 'false');
           }
         });
@@ -172,7 +168,8 @@
               color="#008CBA"
               hoverable>
             </a-plane>
-            <a-text custom-font value="Вперед!!" align="center" color="white" position="0 0 0.01"></a-text>
+            <a-text         font="msdf/main_scene/Black-msdf.json" 
+            font-image="msdf/main_scene/Black.png"  value="Вперед!!" align="center" color="white" position="0 0 0.01"></a-text>
           </a-entity>
         </a-entity>
 
